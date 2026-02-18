@@ -116,63 +116,125 @@
         .section-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
 
         /* Gauge */
-        .gauge-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px 0 0;
+        .gauge-section-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px 20px 0;
         }
 
-        .gauge-wrap {
-            position: relative;
-            width: 320px;
-            height: 180px;
-        }
-
-        .gauge-svg { width: 100%; height: 100%; }
-
-        .gauge-value {
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
+        .gauge-big-value {
             text-align: center;
+            margin-bottom: 20px;
         }
 
-        .gauge-value .gv-number {
+        .gauge-big-value .gbv-number {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 2.2rem;
+            font-size: 3rem;
             font-weight: 700;
+            line-height: 1;
         }
 
-        .gauge-value .gv-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+        .gauge-big-value .gbv-zone {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 6px;
+            letter-spacing: 2px;
         }
 
-        .gauge-labels {
+        .gauge-bar-wrap {
+            position: relative;
+            margin: 0 0 30px;
+        }
+
+        .gauge-bar {
+            display: flex;
+            height: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .gauge-bar .zone-buy {
+            flex: 0 0 20%; /* 0-0.8 out of 4.0 = 20% */
+            background: linear-gradient(90deg, rgba(0,212,170,0.5), rgba(0,212,170,0.7));
+        }
+
+        .gauge-bar .zone-normal {
+            flex: 0 0 40%; /* 0.8-2.4 = 40% */
+            background: linear-gradient(90deg, rgba(85,85,85,0.4), rgba(85,85,85,0.5));
+        }
+
+        .gauge-bar .zone-sell {
+            flex: 0 0 40%; /* 2.4-4.0 = 40% */
+            background: linear-gradient(90deg, rgba(255,71,87,0.5), rgba(255,71,87,0.7));
+        }
+
+        .gauge-marker {
+            position: absolute;
+            top: -8px;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: left 0.5s ease;
+        }
+
+        .gauge-marker-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 12px rgba(255,255,255,0.3);
+        }
+
+        .gauge-marker-line {
+            width: 2px;
+            height: 18px;
+            background: rgba(255,255,255,0.4);
+        }
+
+        .gauge-ticks {
             display: flex;
             justify-content: space-between;
             margin-top: 6px;
-            padding: 0 20px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .gauge-tick-08, .gauge-tick-24 {
+            position: absolute;
+            bottom: -22px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            transform: translateX(-50%);
+        }
+
+        .gauge-tick-08 { left: 20%; }
+        .gauge-tick-24 { left: 60%; }
+
         .gauge-zone-labels {
             display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 12px;
-            font-size: 0.72rem;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.7rem;
+            padding: 0;
         }
+
+        .gauge-zone-labels .gz-label {
+            text-align: center;
+        }
+
+        .gauge-zone-labels .gz-buy { color: var(--buy-color); flex: 0 0 20%; text-align: center; }
+        .gauge-zone-labels .gz-normal { color: var(--text-muted); flex: 0 0 40%; text-align: center; }
+        .gauge-zone-labels .gz-sell { color: var(--sell-color); flex: 0 0 40%; text-align: center; }
 
         .zone-tag {
             display: flex; align-items: center; gap: 5px;
         }
 
         .zone-dot {
+            width: 8px; height: 8px; border-radius: 50%;
             width: 8px; height: 8px; border-radius: 50%;
         }
 
@@ -278,8 +340,7 @@
             .header h1 { font-size: 1.3rem; }
             .chart-container { height: 250px; }
             .chart-container-sub { height: 140px; }
-            .gauge-wrap { width: 260px; height: 150px; }
-            .gauge-value .gv-number { font-size: 1.8rem; }
+            .gauge-big-value .gbv-number { font-size: 2.4rem; }
             .summary-cards { grid-template-columns: repeat(2, 1fr); }
         }
 
@@ -331,30 +392,35 @@
             <div class="section-header">
                 <div>
                     <h2 class="section-title">현재 Mayer Multiple 위치</h2>
-                    <p class="section-desc">0 ~ 4.0 범위에서 현재 위치를 시각적으로 표시합니다</p>
+                    <p class="section-desc">BTC 가격 ÷ 200일 이동평균 — 낮을수록 저평가</p>
                 </div>
             </div>
-            <div class="gauge-container">
-                <div class="gauge-wrap">
-                    <svg class="gauge-svg" viewBox="0 0 320 180" id="gaugeSvg">
-                        <!-- Background arc segments -->
-                        <!-- Buy zone: 0 to 0.8 (green) -->
-                        <!-- Normal: 0.8 to 2.4 (gray) -->
-                        <!-- Sell: 2.4 to 4.0 (red) -->
-                    </svg>
-                    <div class="gauge-value">
-                        <div class="gv-number" id="gaugeNumber">-</div>
-                        <div class="gv-label" id="gaugeLabel">Loading...</div>
+            <div class="gauge-section-inner">
+                <div class="gauge-big-value">
+                    <div class="gbv-number" id="gaugeNumber">-</div>
+                    <div class="gbv-zone" id="gaugeZone">Loading...</div>
+                </div>
+                <div class="gauge-bar-wrap">
+                    <div class="gauge-bar">
+                        <div class="zone-buy"></div>
+                        <div class="zone-normal"></div>
+                        <div class="zone-sell"></div>
                     </div>
+                    <div class="gauge-marker" id="gaugeMarker">
+                        <div class="gauge-marker-dot" id="gaugeMarkerDot"></div>
+                        <div class="gauge-marker-line"></div>
+                    </div>
+                    <span class="gauge-tick-08">0.8</span>
+                    <span class="gauge-tick-24">2.4</span>
                 </div>
-            </div>
-            <div class="gauge-labels">
-                <span>0</span><span>0.8</span><span>2.4</span><span>4.0</span>
-            </div>
-            <div class="gauge-zone-labels">
-                <div class="zone-tag"><div class="zone-dot" style="background:var(--buy-color)"></div>매수 구간 (&lt;0.8)</div>
-                <div class="zone-tag"><div class="zone-dot" style="background:#555"></div>중립 (0.8–2.4)</div>
-                <div class="zone-tag"><div class="zone-dot" style="background:var(--sell-color)"></div>매도 구간 (&gt;2.4)</div>
+                <div class="gauge-ticks">
+                    <span>0</span><span>4.0</span>
+                </div>
+                <div class="gauge-zone-labels">
+                    <div class="gz-buy">매수 구간</div>
+                    <div class="gz-normal">중립</div>
+                    <div class="gz-sell">매도 구간</div>
+                </div>
             </div>
         </section>
 
@@ -519,70 +585,31 @@
         // GAUGE
         // ============================================================
         function renderGauge(mayer) {
-            const svg = document.getElementById('gaugeSvg');
-            const cx = 160, cy = 160, r = 130, strokeW = 22;
+            const clamped = Math.max(0, Math.min(4, mayer));
+            const pct = (clamped / 4) * 100;
 
-            // Angle mapping: 0 -> π (left to right semicircle)
-            // Value 0 = π, value 4.0 = 0
-            function valToAngle(v) {
-                const clamped = Math.max(0, Math.min(4, v));
-                return Math.PI * (1 - clamped / 4);
-            }
+            // Color
+            let color = '#555';
+            let zone = 'NORMAL';
+            if (mayer <= 0.8) { color = '#00d4aa'; zone = 'BUY ZONE'; }
+            else if (mayer >= 2.4) { color = '#ff4757'; zone = 'SELL ZONE'; }
 
-            function arcPath(startVal, endVal) {
-                const a1 = valToAngle(startVal);
-                const a2 = valToAngle(endVal);
-                const x1 = cx + r * Math.cos(a1);
-                const y1 = cy - r * Math.sin(a1);
-                const x2 = cx + r * Math.cos(a2);
-                const y2 = cy - r * Math.sin(a2);
-                const large = (a1 - a2) > Math.PI ? 1 : 0;
-                return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 0 ${x2} ${y2}`;
-            }
-
-            // Background arcs
-            const zones = [
-                { from: 0, to: 0.8, color: 'rgba(0,212,170,0.3)' },
-                { from: 0.8, to: 2.4, color: 'rgba(85,85,85,0.25)' },
-                { from: 2.4, to: 4.0, color: 'rgba(255,71,87,0.3)' }
-            ];
-
-            let svgContent = '';
-            zones.forEach(z => {
-                svgContent += `<path d="${arcPath(z.from, z.to)}" fill="none" stroke="${z.color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
-            });
-
-            // Needle
-            const needleAngle = valToAngle(Math.max(0, Math.min(4, mayer)));
-            const needleLen = r - 10;
-            const nx = cx + needleLen * Math.cos(needleAngle);
-            const ny = cy - needleLen * Math.sin(needleAngle);
-
-            // Needle color
-            let needleColor = '#555';
-            if (mayer <= 0.8) needleColor = '#00d4aa';
-            else if (mayer >= 2.4) needleColor = '#ff4757';
-
-            svgContent += `<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${needleColor}" stroke-width="3" stroke-linecap="round"/>`;
-            svgContent += `<circle cx="${cx}" cy="${cy}" r="6" fill="${needleColor}"/>`;
-
-            // Dot at tip
-            const dotR = 8;
-            const dx = cx + (r) * Math.cos(needleAngle);
-            const dy = cy - (r) * Math.sin(needleAngle);
-            svgContent += `<circle cx="${dx}" cy="${dy}" r="${dotR}" fill="${needleColor}" stroke="${needleColor}" stroke-width="2" opacity="0.9"/>`;
-
-            svg.innerHTML = svgContent;
-
-            // Value text
+            // Big number
             const numEl = document.getElementById('gaugeNumber');
             numEl.textContent = mayer.toFixed(2);
-            numEl.style.color = needleColor;
+            numEl.style.color = color;
 
-            const labelEl = document.getElementById('gaugeLabel');
-            if (mayer <= 0.8) labelEl.textContent = 'BUY ZONE';
-            else if (mayer >= 2.4) labelEl.textContent = 'SELL ZONE';
-            else labelEl.textContent = 'NORMAL';
+            const zoneEl = document.getElementById('gaugeZone');
+            zoneEl.textContent = zone;
+            zoneEl.style.color = color;
+
+            // Marker position
+            const marker = document.getElementById('gaugeMarker');
+            marker.style.left = pct + '%';
+
+            const dot = document.getElementById('gaugeMarkerDot');
+            dot.style.background = color;
+            dot.style.borderColor = '#fff';
         }
 
         // ============================================================
