@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayer Multiple | Herdvibe</title>
+    <meta property="og:title" content="BTC Mayer Multiple | Herdvibe">
+    <meta property="og:description" content="비트코인 메이어 멀티플 분석 대시보드 - 매수/매도 존 감지 및 백테스트">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::-webkit-scrollbar { display: none; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+            --accent-green: #00d4aa;
+            --accent-red: #ff4757;
+            --accent-yellow: #ffd43b;
+            --accent-blue: #4dabf7;
+            --border-color: #2a2a2a;
+            --buy-color: #00d4aa;
+            --sell-color: #ff4757;
+            --neutral-color: #555555;
+        }
+
+        html, body { overflow-x: hidden; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p { color: var(--text-secondary); font-size: 0.85rem; }
+
+        .header .subtitle-detail {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);
+        }
+
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .card-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .card-value { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 600; }
+        .card-sub { font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px; }
+        .card-value.buy { color: var(--buy-color); }
+        .card-value.sell { color: var(--sell-color); }
+        .card-value.neutral { color: var(--text-secondary); }
+
+        /* Section Common */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex; justify-content: center; text-align: center;
+            margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+        }
+
+        .section-title { font-size: 1.1rem; font-weight: 600; }
+        .section-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* Gauge */
+        .gauge-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0 0;
+        }
+
+        .gauge-wrap {
+            position: relative;
+            width: 320px;
+            height: 180px;
+        }
+
+        .gauge-svg { width: 100%; height: 100%; }
+
+        .gauge-value {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .gauge-value .gv-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .gauge-value .gv-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .gauge-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            padding: 0 20px;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .gauge-zone-labels {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 12px;
+            font-size: 0.72rem;
+        }
+
+        .zone-tag {
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        .zone-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+        }
+
+        /* Charts */
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .chart-container-sub { position: relative; height: 180px; width: 100%; margin-top: 5px; }
+
+        .period-selector {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; margin-bottom: 15px; flex-wrap: wrap;
+        }
+
+        .period-selector label { font-size: 0.75rem; color: var(--text-secondary); }
+
+        .period-btn {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            padding: 5px 10px; background: var(--bg-tertiary);
+            border: 1px solid var(--border-color); border-radius: 6px;
+            color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+        }
+
+        .period-btn:hover { border-color: #3a3a3a; }
+        .period-btn.active { border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255, 212, 59, 0.1); }
+
+        .chart-legend {
+            display: flex; gap: 15px; justify-content: center;
+            margin-bottom: 10px; flex-wrap: wrap;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-secondary); }
+        .legend-line { width: 20px; height: 3px; border-radius: 2px; }
+        .legend-line.btc { background: #ffffff; }
+        .legend-line.dma { background: var(--accent-yellow); }
+
+        /* Histogram */
+        .histo-container { position: relative; height: 200px; width: 100%; }
+        .histo-stat { text-align: center; margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+        .histo-stat span { font-weight: 600; }
+
+        /* Backtest */
+        .backtest-table-wrapper { overflow-x: auto; }
+        .backtest-table {
+            width: 100%; border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+        }
+        .backtest-table th {
+            text-align: center; padding: 10px 8px; color: var(--text-muted);
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color); white-space: nowrap;
+        }
+        .backtest-table td {
+            text-align: center; padding: 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.03); white-space: nowrap;
+        }
+        .backtest-table .current-row { background: rgba(0, 212, 170, 0.05); }
+        .backtest-table .current-row td { color: var(--buy-color); }
+        .ret-positive { color: var(--accent-green); }
+        .ret-negative { color: var(--accent-red); }
+        .ret-pending { color: var(--text-muted); font-style: italic; }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 14px; text-align: center;
+        }
+
+        .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; }
+        .stat-sub { font-size: 0.65rem; color: var(--text-secondary); margin-top: 3px; }
+
+        /* Share */
+        .share-bar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+
+        .share-btn {
+            display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+            background: transparent; border: 1px solid var(--border-color);
+            border-radius: 8px; color: var(--text-secondary); font-size: 0.72rem;
+            font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s;
+        }
+
+        .share-btn svg { width: 14px; height: 14px; }
+        .share-btn:hover { background: var(--bg-tertiary); }
+        .share-btn.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
+        .share-btn.kakao:hover { border-color: #fee500; color: #fee500; }
+        .share-btn.telegram:hover { border-color: #26a5e4; color: #26a5e4; }
+        .share-btn.instagram:hover { border-color: #E4405F; color: #E4405F; }
+        .share-btn.copy-link:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+        .footer {
+            text-align: center; padding: 15px 0; border-top: 1px solid var(--border-color);
+            font-size: 0.7rem; color: var(--text-muted); line-height: 1.8;
+        }
+        .footer a { color: var(--accent-yellow); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px 12px 30px; }
+            .header h1 { font-size: 1.3rem; }
+            .chart-container { height: 250px; }
+            .chart-container-sub { height: 140px; }
+            .gauge-wrap { width: 260px; height: 150px; }
+            .gauge-value .gv-number { font-size: 1.8rem; }
+            .summary-cards { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .chart-container { height: 200px; }
+            .chart-container-sub { height: 120px; }
+            .summary-cards { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .summary-card { padding: 10px; }
+            .card-value { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Mayer Multiple</h1>
+            <p>비트코인 가격 ÷ 200일 이동평균 — 장기 과열/저평가 지표</p>
+            <div class="subtitle-detail">
+                Buy &lt; 0.8 · Normal 0.8–2.4 · Sell &gt; 2.4
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="card-label">BTC 현재가</div>
+                <div class="card-value" id="card-price">-</div>
+                <div class="card-sub" id="card-date">-</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-label">200DMA</div>
+                <div class="card-value" style="color:var(--accent-yellow)" id="card-dma">-</div>
+                <div class="card-sub">200일 이동평균</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-label">Mayer Multiple</div>
+                <div class="card-value" id="card-mayer">-</div>
+                <div class="card-sub" id="card-zone">-</div>
+            </div>
+            <div class="summary-card">
+                <div class="card-label">역대 백분위</div>
+                <div class="card-value" id="card-pct">-</div>
+                <div class="card-sub">하위 %</div>
+            </div>
+        </div>
+
+        <!-- Gauge -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">현재 Mayer Multiple 위치</h2>
+                    <p class="section-desc">0 ~ 4.0 범위에서 현재 위치를 시각적으로 표시합니다</p>
+                </div>
+            </div>
+            <div class="gauge-container">
+                <div class="gauge-wrap">
+                    <svg class="gauge-svg" viewBox="0 0 320 180" id="gaugeSvg">
+                        <!-- Background arc segments -->
+                        <!-- Buy zone: 0 to 0.8 (green) -->
+                        <!-- Normal: 0.8 to 2.4 (gray) -->
+                        <!-- Sell: 2.4 to 4.0 (red) -->
+                    </svg>
+                    <div class="gauge-value">
+                        <div class="gv-number" id="gaugeNumber">-</div>
+                        <div class="gv-label" id="gaugeLabel">Loading...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="gauge-labels">
+                <span>0</span><span>0.8</span><span>2.4</span><span>4.0</span>
+            </div>
+            <div class="gauge-zone-labels">
+                <div class="zone-tag"><div class="zone-dot" style="background:var(--buy-color)"></div>매수 구간 (&lt;0.8)</div>
+                <div class="zone-tag"><div class="zone-dot" style="background:#555"></div>중립 (0.8–2.4)</div>
+                <div class="zone-tag"><div class="zone-dot" style="background:var(--sell-color)"></div>매도 구간 (&gt;2.4)</div>
+            </div>
+        </section>
+
+        <!-- Dual Chart -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">BTC 가격 & Mayer Multiple</h2>
+                    <p class="section-desc">상단: BTC 가격(로그) · 하단: Mayer Multiple + 구간 배경</p>
+                </div>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item"><span class="legend-line btc"></span>BTC Price</div>
+                <div class="legend-item"><span class="legend-line dma"></span>200DMA</div>
+            </div>
+            <div class="period-selector">
+                <label>기간:</label>
+                <button class="period-btn" data-period="52">1Y</button>
+                <button class="period-btn" data-period="156">3Y</button>
+                <button class="period-btn" data-period="260">5Y</button>
+                <button class="period-btn active" data-period="0">ALL</button>
+                <button class="period-btn" id="resetZoomBtn" style="margin-left:10px;display:none;" onclick="resetZoom()">Reset Zoom</button>
+            </div>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+            <div class="chart-container-sub">
+                <canvas id="mayerChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Histogram -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">역대 Mayer Multiple 분포</h2>
+                    <p class="section-desc">전체 기간 일간 데이터 기준 히스토그램</p>
+                </div>
+            </div>
+            <div class="histo-container">
+                <canvas id="histoChart"></canvas>
+            </div>
+            <div class="histo-stat" id="histoStat"></div>
+        </section>
+
+        <!-- Backtest -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">백테스트: Mayer ≤ 0.8 진입 후 수익률</h2>
+                    <p class="section-desc">$10,000 투자 기준 시뮬레이션</p>
+                </div>
+            </div>
+            <div class="backtest-table-wrapper">
+                <table class="backtest-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>BTC Price</th>
+                            <th>Mayer</th>
+                            <th>Min Mayer</th>
+                            <th>Duration</th>
+                            <th>1개월</th>
+                            <th>3개월</th>
+                            <th>6개월</th>
+                            <th>12개월</th>
+                        </tr>
+                    </thead>
+                    <tbody id="backtestBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">통계 요약</h2>
+                    <p class="section-desc">완료된 터치 이벤트 기준</p>
+                </div>
+            </div>
+            <div class="stats-grid" id="statsGrid"></div>
+        </section>
+
+        <!-- Share -->
+        <div class="share-bar">
+            <button class="share-btn twitter" onclick="shareTwitter()">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                트위터
+            </button>
+            <button class="share-btn kakao" onclick="shareKakao()">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.724 1.8 5.116 4.508 6.482-.144.525-.925 3.388-.958 3.603 0 0-.02.157.083.217.103.06.224.013.224.013.296-.041 3.434-2.263 3.973-2.652.703.098 1.428.15 2.17.15 5.523 0 10-3.463 10-7.813C22 6.463 17.523 3 12 3z"/></svg>
+                카카오톡
+            </button>
+            <button class="share-btn telegram" onclick="shareTelegram()">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                텔레그램
+            </button>
+            <button class="share-btn instagram" onclick="shareInstagram()">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                인스타그램
+            </button>
+            <button class="share-btn copy-link" onclick="copyLink()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                링크 복사
+            </button>
+        </div>
+
+        <footer class="footer">
+            Mayer Multiple = BTC Price ÷ 200-Day Moving Average<br>
+            Buy &lt; 0.8 · Normal 0.8–2.4 · Sell &gt; 2.4<br>
+            매일 자동 업데이트 · <a href="https://herdvibe.com" target="_blank">herdvibe.com</a>
+        </footer>
+    </div>
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        const KAKAO_KEY = 'a43ed7b39fac35458f4f9df925a279b5';
+        const SHARE_URL = 'https://herdvibe.com/87';
+        const SHARE_TITLE = 'BTC Mayer Multiple';
+        const SHARE_DESC = '비트코인 메이어 멀티플 분석 대시보드';
+
+        let DATA = null;
+        let priceChart = null;
+        let mayerChart = null;
+        let histoChart = null;
+        let currentPeriod = 0;
+
+        // ============================================================
+        // DATA
+        // ============================================================
+        async function loadData() {
+            try {
+                const res = await fetch('data/btc_mayer.json');
+                DATA = await res.json();
+                initDashboard();
+            } catch (e) {
+                console.error('Data load failed:', e);
+            }
+        }
+
+        // ============================================================
+        // WATERMARK
+        // ============================================================
+        const watermarkPlugin = {
+            id: 'watermark',
+            afterDraw(chart) {
+                const { ctx, chartArea } = chart;
+                if (!chartArea) return;
+                ctx.save();
+                ctx.font = '36px JetBrains Mono';
+                ctx.fillStyle = 'rgba(255,255,255,0.06)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Herdvibe.com', (chartArea.left + chartArea.right) / 2, (chartArea.top + chartArea.bottom) / 2);
+                ctx.restore();
+            }
+        };
+
+        // ============================================================
+        // GAUGE
+        // ============================================================
+        function renderGauge(mayer) {
+            const svg = document.getElementById('gaugeSvg');
+            const cx = 160, cy = 160, r = 130, strokeW = 22;
+
+            // Angle mapping: 0 -> π (left to right semicircle)
+            // Value 0 = π, value 4.0 = 0
+            function valToAngle(v) {
+                const clamped = Math.max(0, Math.min(4, v));
+                return Math.PI * (1 - clamped / 4);
+            }
+
+            function arcPath(startVal, endVal) {
+                const a1 = valToAngle(startVal);
+                const a2 = valToAngle(endVal);
+                const x1 = cx + r * Math.cos(a1);
+                const y1 = cy - r * Math.sin(a1);
+                const x2 = cx + r * Math.cos(a2);
+                const y2 = cy - r * Math.sin(a2);
+                const large = (a1 - a2) > Math.PI ? 1 : 0;
+                return `M ${x1} ${y1} A ${r} ${r} 0 ${large} 0 ${x2} ${y2}`;
+            }
+
+            // Background arcs
+            const zones = [
+                { from: 0, to: 0.8, color: 'rgba(0,212,170,0.3)' },
+                { from: 0.8, to: 2.4, color: 'rgba(85,85,85,0.25)' },
+                { from: 2.4, to: 4.0, color: 'rgba(255,71,87,0.3)' }
+            ];
+
+            let svgContent = '';
+            zones.forEach(z => {
+                svgContent += `<path d="${arcPath(z.from, z.to)}" fill="none" stroke="${z.color}" stroke-width="${strokeW}" stroke-linecap="round"/>`;
+            });
+
+            // Needle
+            const needleAngle = valToAngle(Math.max(0, Math.min(4, mayer)));
+            const needleLen = r - 10;
+            const nx = cx + needleLen * Math.cos(needleAngle);
+            const ny = cy - needleLen * Math.sin(needleAngle);
+
+            // Needle color
+            let needleColor = '#555';
+            if (mayer <= 0.8) needleColor = '#00d4aa';
+            else if (mayer >= 2.4) needleColor = '#ff4757';
+
+            svgContent += `<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${needleColor}" stroke-width="3" stroke-linecap="round"/>`;
+            svgContent += `<circle cx="${cx}" cy="${cy}" r="6" fill="${needleColor}"/>`;
+
+            // Dot at tip
+            const dotR = 8;
+            const dx = cx + (r) * Math.cos(needleAngle);
+            const dy = cy - (r) * Math.sin(needleAngle);
+            svgContent += `<circle cx="${dx}" cy="${dy}" r="${dotR}" fill="${needleColor}" stroke="${needleColor}" stroke-width="2" opacity="0.9"/>`;
+
+            svg.innerHTML = svgContent;
+
+            // Value text
+            const numEl = document.getElementById('gaugeNumber');
+            numEl.textContent = mayer.toFixed(2);
+            numEl.style.color = needleColor;
+
+            const labelEl = document.getElementById('gaugeLabel');
+            if (mayer <= 0.8) labelEl.textContent = 'BUY ZONE';
+            else if (mayer >= 2.4) labelEl.textContent = 'SELL ZONE';
+            else labelEl.textContent = 'NORMAL';
+        }
+
+        // ============================================================
+        // DUAL CHART
+        // ============================================================
+        function createDualChart(periodWeeks) {
+            const cd = DATA.chart_data;
+            const dates = Object.keys(cd).sort();
+
+            let filtered = dates;
+            if (periodWeeks > 0) {
+                filtered = dates.slice(-periodWeeks);
+            }
+
+            const prices = filtered.map(d => cd[d].close);
+            const dmas = filtered.map(d => cd[d].dma200);
+            const mayers = filtered.map(d => cd[d].mayer);
+
+            // X-axis tick callback
+            function tickCb(val) {
+                const d = this.getLabelForValue(val);
+                if (!d) return null;
+                const mo = parseInt(d.substring(5, 7));
+                const day = parseInt(d.substring(8, 10));
+                if (filtered.length <= 60) {
+                    if (mo === 1 && day <= 7) return d.substring(0, 4) + ' Jan';
+                    if (mo === 4 && day <= 7) return 'Apr';
+                    if (mo === 7 && day <= 7) return 'Jul';
+                    if (mo === 10 && day <= 7) return 'Oct';
+                    return null;
+                } else if (filtered.length <= 170) {
+                    if (mo === 1 && day <= 7) return d.substring(0, 4) + ' Jan';
+                    if (mo === 7 && day <= 7) return 'Jul';
+                    return null;
+                } else {
+                    if (mo === 1 && day <= 7) return d.substring(0, 4);
+                    return null;
+                }
+            }
+
+            const zoomReset = () => { document.getElementById('resetZoomBtn').style.display = 'inline-block'; };
+
+            // --- PRICE CHART ---
+            const ctx1 = document.getElementById('priceChart').getContext('2d');
+            if (priceChart) priceChart.destroy();
+
+            priceChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: filtered,
+                    datasets: [
+                        {
+                            label: 'BTC Price',
+                            data: prices,
+                            borderColor: '#fff',
+                            borderWidth: 1.5,
+                            fill: false,
+                            tension: 0.2,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            label: '200DMA',
+                            data: dmas,
+                            borderColor: '#ffd43b',
+                            borderWidth: 1.5,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            yAxisID: 'y',
+                            order: 3
+                        }
+                    ]
+                },
+                plugins: [watermarkPlugin],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15,15,15,0.95)',
+                            titleColor: '#fff', bodyColor: '#ccc',
+                            borderColor: '#333', borderWidth: 1, padding: 12,
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyFont: { family: 'JetBrains Mono', size: 12 },
+                            callbacks: {
+                                label: (ctx) => ctx.raw === null ? null : ` ${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+                            }
+                        },
+                        zoom: {
+                            pan: { enabled: true, mode: 'x', onPanComplete: zoomReset },
+                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: zoomReset },
+                            limits: { x: { minRange: 10 } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: false // Hidden, shown on mayer chart below
+                        },
+                        y: {
+                            type: 'logarithmic',
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: {
+                                color: '#888',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                callback: (val) => {
+                                    if ([200, 500, 1000, 3000, 5000, 10000, 30000, 50000, 100000].includes(val))
+                                        return val >= 1000 ? '$' + (val/1000) + 'K' : '$' + val;
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- MAYER CHART (sub) ---
+            const ctx2 = document.getElementById('mayerChart').getContext('2d');
+            if (mayerChart) mayerChart.destroy();
+
+            // Zone background plugin
+            const zonePlugin = {
+                id: 'zoneBackground',
+                beforeDraw(chart) {
+                    const { ctx, chartArea, scales } = chart;
+                    if (!chartArea || !scales.y) return;
+                    ctx.save();
+
+                    // Buy zone (0 to 0.8)
+                    const buyTop = scales.y.getPixelForValue(0.8);
+                    const buyBottom = scales.y.getPixelForValue(0);
+                    ctx.fillStyle = 'rgba(0,212,170,0.08)';
+                    ctx.fillRect(chartArea.left, buyTop, chartArea.width, buyBottom - buyTop);
+
+                    // Sell zone (2.4+)
+                    const sellTop = scales.y.getPixelForValue(Math.min(scales.y.max, 4));
+                    const sellBottom = scales.y.getPixelForValue(2.4);
+                    ctx.fillStyle = 'rgba(255,71,87,0.08)';
+                    ctx.fillRect(chartArea.left, sellTop, chartArea.width, sellBottom - sellTop);
+
+                    // Threshold lines
+                    ctx.setLineDash([4, 4]);
+                    ctx.lineWidth = 1;
+
+                    // 0.8 line
+                    ctx.strokeStyle = 'rgba(0,212,170,0.4)';
+                    const y08 = scales.y.getPixelForValue(0.8);
+                    ctx.beginPath(); ctx.moveTo(chartArea.left, y08); ctx.lineTo(chartArea.right, y08); ctx.stroke();
+
+                    // 2.4 line
+                    ctx.strokeStyle = 'rgba(255,71,87,0.4)';
+                    const y24 = scales.y.getPixelForValue(2.4);
+                    ctx.beginPath(); ctx.moveTo(chartArea.left, y24); ctx.lineTo(chartArea.right, y24); ctx.stroke();
+
+                    ctx.restore();
+                }
+            };
+
+            mayerChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: filtered,
+                    datasets: [{
+                        label: 'Mayer Multiple',
+                        data: mayers,
+                        borderColor: '#ffd43b',
+                        borderWidth: 1.5,
+                        backgroundColor: 'rgba(255,212,59,0.05)',
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                    }]
+                },
+                plugins: [zonePlugin],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15,15,15,0.95)',
+                            titleColor: '#fff', bodyColor: '#ccc',
+                            borderColor: '#333', borderWidth: 1, padding: 10,
+                            bodyFont: { family: 'JetBrains Mono', size: 11 },
+                            callbacks: {
+                                label: (ctx) => ctx.raw === null ? null : ` Mayer: ${ctx.parsed.y.toFixed(2)}`
+                            }
+                        },
+                        zoom: {
+                            pan: { enabled: true, mode: 'x', onPanComplete: zoomReset },
+                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: zoomReset },
+                            limits: { x: { minRange: 10 } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: {
+                                color: '#999',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                autoSkip: false,
+                                maxRotation: 0,
+                                callback: tickCb
+                            }
+                        },
+                        y: {
+                            min: 0,
+                            max: 4,
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: {
+                                color: '#888',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                stepSize: 0.8,
+                                callback: (v) => v.toFixed(1)
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function resetZoom() {
+            if (priceChart) priceChart.resetZoom();
+            if (mayerChart) mayerChart.resetZoom();
+            document.getElementById('resetZoomBtn').style.display = 'none';
+        }
+
+        // ============================================================
+        // HISTOGRAM
+        // ============================================================
+        function renderHistogram() {
+            const bins = DATA.histogram;
+            const currentMayer = DATA.current.mayer;
+
+            const labels = bins.map(b => b.low.toFixed(1));
+            const counts = bins.map(b => b.count);
+            const colors = bins.map(b => {
+                if (b.high <= 0.8) return 'rgba(0,212,170,0.7)';
+                if (b.low >= 2.4) return 'rgba(255,71,87,0.7)';
+                // Highlight current bin
+                if (currentMayer >= b.low && currentMayer < b.high) return 'rgba(255,212,59,0.9)';
+                return 'rgba(85,85,85,0.5)';
+            });
+
+            const ctx = document.getElementById('histoChart').getContext('2d');
+            if (histoChart) histoChart.destroy();
+
+            histoChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: colors,
+                        borderWidth: 0,
+                        barPercentage: 1.0,
+                        categoryPercentage: 1.0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15,15,15,0.95)',
+                            bodyFont: { family: 'JetBrains Mono', size: 11 },
+                            callbacks: {
+                                title: (items) => `Mayer ${bins[items[0].dataIndex].low.toFixed(1)} – ${bins[items[0].dataIndex].high.toFixed(1)}`,
+                                label: (ctx) => ` ${ctx.raw}일 (${bins[ctx.dataIndex].pct}%)`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#666',
+                                font: { family: 'JetBrains Mono', size: 9 },
+                                maxRotation: 0,
+                                callback: function(val, idx) {
+                                    const v = parseFloat(this.getLabelForValue(val));
+                                    if ([0, 0.5, 0.8, 1.0, 1.5, 2.0, 2.4, 3.0, 3.5, 4.0].includes(v)) return v.toFixed(1);
+                                    return null;
+                                }
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.04)' },
+                            ticks: {
+                                color: '#666',
+                                font: { family: 'JetBrains Mono', size: 9 }
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('histoStat').innerHTML =
+                `현재 <span style="color:${currentMayer <= 0.8 ? 'var(--buy-color)' : '#ffd43b'}">${currentMayer.toFixed(2)}</span> → 역대 하위 <span style="color:var(--accent-yellow)">${DATA.current.percentile}%</span>`;
+        }
+
+        // ============================================================
+        // BACKTEST
+        // ============================================================
+        function renderBacktest() {
+            const tbody = document.getElementById('backtestBody');
+            tbody.innerHTML = '';
+
+            DATA.touches.forEach(t => {
+                const row = document.createElement('tr');
+                if (t.is_current) row.className = 'current-row';
+
+                function retCell(period) {
+                    const ret = t.returns[period];
+                    const sim = t.sim_values[period];
+                    if (ret === null) return '<td class="ret-pending">—</td>';
+                    const cls = ret >= 0 ? 'ret-positive' : 'ret-negative';
+                    const sign = ret >= 0 ? '+' : '';
+                    return `<td class="${cls}">${sign}${ret.toFixed(1)}%<br><span style="font-size:0.6rem;opacity:0.7">$${sim.toLocaleString()}</span></td>`;
+                }
+
+                row.innerHTML = `
+                    <td style="font-weight:600">${t.date_label}</td>
+                    <td>$${t.price.toLocaleString('en-US', {maximumFractionDigits:0})}</td>
+                    <td style="color:var(--accent-yellow)">${t.mayer.toFixed(2)}</td>
+                    <td>${t.min_mayer.toFixed(2)}</td>
+                    <td>${t.duration_days}일</td>
+                    ${retCell('1mo')}${retCell('3mo')}${retCell('6mo')}${retCell('12mo')}
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ============================================================
+        // STATS
+        // ============================================================
+        function renderStats() {
+            const s = DATA.stats;
+            const grid = document.getElementById('statsGrid');
+            grid.innerHTML = '';
+
+            const items = [
+                { label: '총 터치 횟수', value: s.total_touches + '회', sub: 'Mayer ≤ 0.8' },
+                { label: '12개월 적중률', value: (s.hit_rate_12mo || 0) + '%', sub: '양수 수익 비율', color: s.hit_rate_12mo >= 50 ? 'var(--accent-green)' : 'var(--accent-red)' },
+                { label: '평균 12개월', value: (s.avg_return_12mo >= 0 ? '+' : '') + (s.avg_return_12mo || 0).toFixed(1) + '%', sub: '터치 후 12개월', color: s.avg_return_12mo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' },
+                { label: '평균 6개월', value: (s.avg_return_6mo >= 0 ? '+' : '') + (s.avg_return_6mo || 0).toFixed(1) + '%', sub: '터치 후 6개월', color: s.avg_return_6mo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' },
+                { label: '3개월 적중률', value: (s.hit_rate_3mo || 0) + '%', sub: '양수 수익 비율', color: s.hit_rate_3mo >= 50 ? 'var(--accent-green)' : 'var(--accent-red)' },
+                { label: '평균 1개월', value: (s.avg_return_1mo >= 0 ? '+' : '') + (s.avg_return_1mo || 0).toFixed(1) + '%', sub: '터치 후 1개월', color: s.avg_return_1mo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' },
+            ];
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'stat-card';
+                card.innerHTML = `
+                    <div class="stat-label">${item.label}</div>
+                    <div class="stat-value" style="color:${item.color || 'var(--text-primary)'}">${item.value}</div>
+                    <div class="stat-sub">${item.sub}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================================
+        // SUMMARY
+        // ============================================================
+        function renderSummary() {
+            const c = DATA.current;
+            document.getElementById('card-price').textContent = '$' + c.price.toLocaleString('en-US', { maximumFractionDigits: 0 });
+            document.getElementById('card-date').textContent = c.date;
+            document.getElementById('card-dma').textContent = '$' + c.dma200.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+            const mEl = document.getElementById('card-mayer');
+            mEl.textContent = c.mayer.toFixed(2);
+            if (c.mayer <= 0.8) { mEl.className = 'card-value buy'; }
+            else if (c.mayer >= 2.4) { mEl.className = 'card-value sell'; }
+            else { mEl.className = 'card-value neutral'; }
+
+            const zoneEl = document.getElementById('card-zone');
+            if (c.mayer <= 0.8) zoneEl.textContent = 'BUY ZONE';
+            else if (c.mayer >= 2.4) zoneEl.textContent = 'SELL ZONE';
+            else zoneEl.textContent = 'NORMAL';
+
+            document.getElementById('card-pct').textContent = c.percentile + '%';
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        function initDashboard() {
+            try { renderSummary(); } catch(e) { console.error('Summary:', e); }
+            try { renderGauge(DATA.current.mayer); } catch(e) { console.error('Gauge:', e); }
+            try { createDualChart(currentPeriod); } catch(e) { console.error('Chart:', e); }
+            try { renderHistogram(); } catch(e) { console.error('Histo:', e); }
+            try { renderBacktest(); } catch(e) { console.error('Backtest:', e); }
+            try { renderStats(); } catch(e) { console.error('Stats:', e); }
+        }
+
+        document.querySelectorAll('.period-btn').forEach(btn => {
+            if (!btn.id) btn.addEventListener('click', () => {
+                document.querySelectorAll('.period-btn').forEach(b => { if (!b.id) b.classList.remove('active'); });
+                btn.classList.add('active');
+                currentPeriod = parseInt(btn.dataset.period);
+                createDualChart(currentPeriod);
+                document.getElementById('resetZoomBtn').style.display = 'none';
+            });
+        });
+
+        // ============================================================
+        // SHARING
+        // ============================================================
+        function shareTwitter() {
+            const text = `${SHARE_TITLE}\n비트코인 메이어 멀티플 현재: ${DATA.current.mayer.toFixed(2)}`;
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(SHARE_URL)}`, '_blank');
+        }
+        function shareKakao() {
+            if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: { title: SHARE_TITLE, description: SHARE_DESC, imageUrl: '', link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL } },
+                buttons: [{ title: '차트 보기', link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL } }]
+            });
+        }
+        function shareTelegram() {
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(SHARE_URL)}&text=${encodeURIComponent(SHARE_TITLE + ' - ' + SHARE_DESC)}`, '_blank');
+        }
+        function shareInstagram() {
+            navigator.clipboard.writeText(SHARE_URL).then(() => {
+                const btn = document.querySelector('.instagram');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 링크 복사됨! 스토리에 붙여넣기';
+                btn.style.borderColor = '#E4405F'; btn.style.color = '#E4405F';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2500);
+            });
+        }
+        function copyLink() {
+            navigator.clipboard.writeText(SHARE_URL).then(() => {
+                const btn = document.querySelector('.copy-link');
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 복사됨!';
+                btn.style.borderColor = 'var(--accent-green)'; btn.style.color = 'var(--accent-green)';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
