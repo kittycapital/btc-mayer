@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-02-18 02:53 UTC",
+    "generated": "2026-02-18 03:04 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 3960
+    "total_days": 3973
   },
   "current": {
-    "price": 73019.7,
-    "dma200": 103308.1,
-    "mayer": 0.7068,
-    "percentile": 6.8,
-    "date": "2026-02-04"
+    "price": 67340.57,
+    "dma200": 100102.52,
+    "mayer": 0.6727,
+    "percentile": 5.1,
+    "date": "2026-02-18"
   },
   "chart_data": {
     "2014-09-17": {
@@ -2991,6 +2991,16 @@
       "close": 73019.7,
       "dma200": 103308.1,
       "mayer": 0.7068
+    },
+    "2026-02-11": {
+      "close": 66991.97,
+      "dma200": 101564.45,
+      "mayer": 0.6596
+    },
+    "2026-02-18": {
+      "close": 67340.57,
+      "dma200": 100102.52,
+      "mayer": 0.6727
     }
   },
   "histogram": [
@@ -3040,78 +3050,78 @@
       "range": "0.6-0.7",
       "low": 0.6,
       "high": 0.7,
-      "count": 196,
-      "pct": 4.95
+      "count": 209,
+      "pct": 5.26
     },
     {
       "range": "0.7-0.8",
       "low": 0.7,
       "high": 0.8,
       "count": 306,
-      "pct": 7.73
+      "pct": 7.7
     },
     {
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
       "count": 444,
-      "pct": 11.21
+      "pct": 11.18
     },
     {
       "range": "0.9-1.0",
       "low": 0.9,
       "high": 1.0,
       "count": 441,
-      "pct": 11.14
+      "pct": 11.1
     },
     {
       "range": "1.0-1.1",
       "low": 1.0,
       "high": 1.1,
       "count": 372,
-      "pct": 9.39
+      "pct": 9.36
     },
     {
       "range": "1.1-1.2",
       "low": 1.1,
       "high": 1.2,
       "count": 616,
-      "pct": 15.56
+      "pct": 15.5
     },
     {
       "range": "1.2-1.3",
       "low": 1.2,
       "high": 1.3,
       "count": 392,
-      "pct": 9.9
+      "pct": 9.87
     },
     {
       "range": "1.3-1.4",
       "low": 1.3,
       "high": 1.4,
       "count": 312,
-      "pct": 7.88
+      "pct": 7.85
     },
     {
       "range": "1.4-1.5",
       "low": 1.4,
       "high": 1.5,
       "count": 198,
-      "pct": 5.0
+      "pct": 4.98
     },
     {
       "range": "1.5-1.6",
       "low": 1.5,
       "high": 1.6,
       "count": 112,
-      "pct": 2.83
+      "pct": 2.82
     },
     {
       "range": "1.6-1.7",
       "low": 1.6,
       "high": 1.7,
       "count": 103,
-      "pct": 2.6
+      "pct": 2.59
     },
     {
       "range": "1.7-1.8",
@@ -3125,7 +3135,7 @@
       "low": 1.8,
       "high": 1.9,
       "count": 57,
-      "pct": 1.44
+      "pct": 1.43
     },
     {
       "range": "1.9-2.0",
@@ -3167,7 +3177,7 @@
       "low": 2.4,
       "high": 2.5,
       "count": 22,
-      "pct": 0.56
+      "pct": 0.55
     },
     {
       "range": "2.5-2.6",
@@ -3462,17 +3472,17 @@
       "price": 86631.9,
       "dma200": 110370.69,
       "mayer": 0.78,
-      "min_mayer": 0.71,
-      "duration_days": 76,
+      "min_mayer": 0.61,
+      "duration_days": 90,
       "returns": {
         "1mo": 2.0,
-        "3mo": null,
+        "3mo": -22.3,
         "6mo": null,
         "12mo": null
       },
       "sim_values": {
         "1mo": 10198,
-        "3mo": null,
+        "3mo": 7773,
         "6mo": null,
         "12mo": null
       },
