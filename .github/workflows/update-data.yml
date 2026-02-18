@@ -1,0 +1,53 @@
+name: Update Mayer Multiple Data
+
+on:
+  schedule:
+    # Run daily at 09:00 UTC (18:00 KST)
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install yfinance
+
+      - name: Update BTC price data
+        run: |
+          python -c "
+          import yfinance as yf
+          import csv
+          ticker = yf.Ticker('BTC-USD')
+          df = ticker.history(period='max')
+          df = df.reset_index()
+          with open('data/BTC_USD.csv', 'w', newline='') as f:
+              w = csv.writer(f)
+              w.writerow(['Date','Close','High','Low','Open','Volume'])
+              for _, r in df.iterrows():
+                  w.writerow([r['Date'].strftime('%Y-%m-%d'), r['Close'], r['High'], r['Low'], r['Open'], int(r['Volume'] or 0)])
+          print(f'Updated BTC_USD.csv: {len(df)} rows')
+          "
+
+      - name: Calculate Mayer Multiple data
+        run: python fetch_data.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          git diff --cached --quiet || git commit -m "📊 Update Mayer data $(date +'%Y-%m-%d')"
+          git push
