@@ -154,17 +154,17 @@
         }
 
         .gauge-bar .zone-buy {
-            flex: 0 0 20%; /* 0-0.8 out of 4.0 = 20% */
+            flex: 0 0 20%;
             background: linear-gradient(90deg, rgba(0,212,170,0.5), rgba(0,212,170,0.7));
         }
 
         .gauge-bar .zone-normal {
-            flex: 0 0 40%; /* 0.8-2.4 = 40% */
+            flex: 0 0 40%;
             background: linear-gradient(90deg, rgba(85,85,85,0.4), rgba(85,85,85,0.5));
         }
 
         .gauge-bar .zone-sell {
-            flex: 0 0 40%; /* 2.4-4.0 = 40% */
+            flex: 0 0 40%;
             background: linear-gradient(90deg, rgba(255,71,87,0.5), rgba(255,71,87,0.7));
         }
 
@@ -234,7 +234,6 @@
         }
 
         .zone-dot {
-            width: 8px; height: 8px; border-radius: 50%;
             width: 8px; height: 8px; border-radius: 50%;
         }
 
@@ -551,6 +550,36 @@
         let currentPeriod = 0;
 
         // ============================================================
+        // CLIPBOARD HELPER (iframe/HTTP fallback)
+        // ============================================================
+        function copyToClipboard(text) {
+            // Try modern API first
+            if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            // Fallback: textarea + execCommand
+            return new Promise((resolve, reject) => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '-9999px';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                try {
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    ok ? resolve() : reject(new Error('execCommand failed'));
+                } catch (e) {
+                    document.body.removeChild(ta);
+                    reject(e);
+                }
+            });
+        }
+
+        // ============================================================
         // DATA
         // ============================================================
         async function loadData() {
@@ -588,13 +617,11 @@
             const clamped = Math.max(0, Math.min(4, mayer));
             const pct = (clamped / 4) * 100;
 
-            // Color
             let color = '#555';
             let zone = 'NORMAL';
             if (mayer <= 0.8) { color = '#00d4aa'; zone = 'BUY ZONE'; }
             else if (mayer >= 2.4) { color = '#ff4757'; zone = 'SELL ZONE'; }
 
-            // Big number
             const numEl = document.getElementById('gaugeNumber');
             numEl.textContent = mayer.toFixed(2);
             numEl.style.color = color;
@@ -603,7 +630,6 @@
             zoneEl.textContent = zone;
             zoneEl.style.color = color;
 
-            // Marker position
             const marker = document.getElementById('gaugeMarker');
             marker.style.left = pct + '%';
 
@@ -628,7 +654,6 @@
             const dmas = filtered.map(d => cd[d].dma200);
             const mayers = filtered.map(d => cd[d].mayer);
 
-            // X-axis tick callback
             function tickCb(val) {
                 const d = this.getLabelForValue(val);
                 if (!d) return null;
@@ -652,7 +677,6 @@
 
             const zoomReset = () => { document.getElementById('resetZoomBtn').style.display = 'inline-block'; };
 
-            // --- PRICE CHART ---
             const ctx1 = document.getElementById('priceChart').getContext('2d');
             if (priceChart) priceChart.destroy();
 
@@ -711,9 +735,7 @@
                         }
                     },
                     scales: {
-                        x: {
-                            display: false // Hidden, shown on mayer chart below
-                        },
+                        x: { display: false },
                         y: {
                             type: 'logarithmic',
                             grid: { color: 'rgba(255,255,255,0.04)' },
@@ -731,11 +753,9 @@
                 }
             });
 
-            // --- MAYER CHART (sub) ---
             const ctx2 = document.getElementById('mayerChart').getContext('2d');
             if (mayerChart) mayerChart.destroy();
 
-            // Zone background plugin
             const zonePlugin = {
                 id: 'zoneBackground',
                 beforeDraw(chart) {
@@ -743,28 +763,23 @@
                     if (!chartArea || !scales.y) return;
                     ctx.save();
 
-                    // Buy zone (0 to 0.8)
                     const buyTop = scales.y.getPixelForValue(0.8);
                     const buyBottom = scales.y.getPixelForValue(0);
                     ctx.fillStyle = 'rgba(0,212,170,0.08)';
                     ctx.fillRect(chartArea.left, buyTop, chartArea.width, buyBottom - buyTop);
 
-                    // Sell zone (2.4+)
                     const sellTop = scales.y.getPixelForValue(Math.min(scales.y.max, 4));
                     const sellBottom = scales.y.getPixelForValue(2.4);
                     ctx.fillStyle = 'rgba(255,71,87,0.08)';
                     ctx.fillRect(chartArea.left, sellTop, chartArea.width, sellBottom - sellTop);
 
-                    // Threshold lines
                     ctx.setLineDash([4, 4]);
                     ctx.lineWidth = 1;
 
-                    // 0.8 line
                     ctx.strokeStyle = 'rgba(0,212,170,0.4)';
                     const y08 = scales.y.getPixelForValue(0.8);
                     ctx.beginPath(); ctx.moveTo(chartArea.left, y08); ctx.lineTo(chartArea.right, y08); ctx.stroke();
 
-                    // 2.4 line
                     ctx.strokeStyle = 'rgba(255,71,87,0.4)';
                     const y24 = scales.y.getPixelForValue(2.4);
                     ctx.beginPath(); ctx.moveTo(chartArea.left, y24); ctx.lineTo(chartArea.right, y24); ctx.stroke();
@@ -856,7 +871,6 @@
             const colors = bins.map(b => {
                 if (b.high <= 0.8) return 'rgba(0,212,170,0.7)';
                 if (b.low >= 2.4) return 'rgba(255,71,87,0.7)';
-                // Highlight current bin
                 if (currentMayer >= b.low && currentMayer < b.high) return 'rgba(255,212,59,0.9)';
                 return 'rgba(85,85,85,0.5)';
             });
@@ -1044,21 +1058,25 @@
             window.open(`https://t.me/share/url?url=${encodeURIComponent(SHARE_URL)}&text=${encodeURIComponent(SHARE_TITLE + ' - ' + SHARE_DESC)}`, '_blank');
         }
         function shareInstagram() {
-            navigator.clipboard.writeText(SHARE_URL).then(() => {
+            copyToClipboard(SHARE_URL).then(() => {
                 const btn = document.querySelector('.instagram');
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 링크 복사됨! 스토리에 붙여넣기';
                 btn.style.borderColor = '#E4405F'; btn.style.color = '#E4405F';
                 setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2500);
+            }).catch(() => {
+                window.open(SHARE_URL, '_blank');
             });
         }
         function copyLink() {
-            navigator.clipboard.writeText(SHARE_URL).then(() => {
+            copyToClipboard(SHARE_URL).then(() => {
                 const btn = document.querySelector('.copy-link');
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 복사됨!';
                 btn.style.borderColor = 'var(--accent-green)'; btn.style.color = 'var(--accent-green)';
                 setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
+            }).catch(() => {
+                window.open(SHARE_URL, '_blank');
             });
         }
 
