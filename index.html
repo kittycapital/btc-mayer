@@ -885,27 +885,22 @@
         function shareTelegram() {
             window.open(`https://t.me/share/url?url=${encodeURIComponent(SHARE_URL)}&text=${encodeURIComponent(SHARE_TITLE + ' - ' + SHARE_DESC)}`, '_blank');
         }
+        function showCopied(btn) {
+            const orig = btn.innerHTML;
+            const origBorder = btn.style.borderColor;
+            const origColor = btn.style.color;
+            btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 복사됨!';
+            btn.style.borderColor = 'var(--accent-green)';
+            btn.style.color = 'var(--accent-green)';
+            setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = origBorder; btn.style.color = origColor; }, 2000);
+        }
         function shareInstagram() {
-            copyToClipboard(SHARE_URL).then(() => {
-                const btn = document.querySelector('.instagram');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 링크 복사됨! 스토리에 붙여넣기';
-                btn.style.borderColor = '#E4405F'; btn.style.color = '#E4405F';
-                setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2500);
-            }).catch(() => {
-                window.prompt('아래 링크를 복사하세요 (Ctrl+C):', SHARE_URL);
-            });
+            copyToClipboard(SHARE_URL);
+            showCopied(document.querySelector('.instagram'));
         }
         function copyLink() {
-            copyToClipboard(SHARE_URL).then(() => {
-                const btn = document.querySelector('.copy-link');
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 복사됨!';
-                btn.style.borderColor = 'var(--accent-green)'; btn.style.color = 'var(--accent-green)';
-                setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = ''; btn.style.color = ''; }, 2000);
-            }).catch(() => {
-                window.prompt('아래 링크를 복사하세요 (Ctrl+C):', SHARE_URL);
-            });
+            copyToClipboard(SHARE_URL);
+            showCopied(document.querySelector('.copy-link'));
         }
 
         document.addEventListener('DOMContentLoaded', loadData);
