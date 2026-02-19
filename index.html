@@ -75,7 +75,6 @@
             margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);
         }
 
-        /* Summary Cards */
         .summary-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -98,7 +97,6 @@
         .card-value.sell { color: var(--sell-color); }
         .card-value.neutral { color: var(--text-secondary); }
 
-        /* Section Common */
         .section {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -115,129 +113,64 @@
         .section-title { font-size: 1.1rem; font-weight: 600; }
         .section-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
 
-        /* Gauge */
         .gauge-section-inner {
             max-width: 600px;
             margin: 0 auto;
             padding: 10px 20px 0;
         }
 
-        .gauge-big-value {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        .gauge-big-value { text-align: center; margin-bottom: 20px; }
 
         .gauge-big-value .gbv-number {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1;
+            font-size: 3rem; font-weight: 700; line-height: 1;
         }
 
         .gauge-big-value .gbv-zone {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 6px;
-            letter-spacing: 2px;
+            font-size: 0.85rem; font-weight: 600; margin-top: 6px; letter-spacing: 2px;
         }
 
-        .gauge-bar-wrap {
-            position: relative;
-            margin: 0 0 30px;
-        }
+        .gauge-bar-wrap { position: relative; margin: 0 0 30px; }
 
-        .gauge-bar {
-            display: flex;
-            height: 16px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+        .gauge-bar { display: flex; height: 16px; border-radius: 8px; overflow: hidden; }
 
-        .gauge-bar .zone-buy {
-            flex: 0 0 20%;
-            background: linear-gradient(90deg, rgba(0,212,170,0.5), rgba(0,212,170,0.7));
-        }
-
-        .gauge-bar .zone-normal {
-            flex: 0 0 40%;
-            background: linear-gradient(90deg, rgba(85,85,85,0.4), rgba(85,85,85,0.5));
-        }
-
-        .gauge-bar .zone-sell {
-            flex: 0 0 40%;
-            background: linear-gradient(90deg, rgba(255,71,87,0.5), rgba(255,71,87,0.7));
-        }
+        .gauge-bar .zone-buy { flex: 0 0 20%; background: linear-gradient(90deg, rgba(0,212,170,0.5), rgba(0,212,170,0.7)); }
+        .gauge-bar .zone-normal { flex: 0 0 40%; background: linear-gradient(90deg, rgba(85,85,85,0.4), rgba(85,85,85,0.5)); }
+        .gauge-bar .zone-sell { flex: 0 0 40%; background: linear-gradient(90deg, rgba(255,71,87,0.5), rgba(255,71,87,0.7)); }
 
         .gauge-marker {
-            position: absolute;
-            top: -8px;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: left 0.5s ease;
+            position: absolute; top: -8px; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; transition: left 0.5s ease;
         }
 
         .gauge-marker-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 3px solid #fff;
-            box-shadow: 0 0 12px rgba(255,255,255,0.3);
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 3px solid #fff; box-shadow: 0 0 12px rgba(255,255,255,0.3);
         }
 
-        .gauge-marker-line {
-            width: 2px;
-            height: 18px;
-            background: rgba(255,255,255,0.4);
-        }
+        .gauge-marker-line { width: 2px; height: 18px; background: rgba(255,255,255,0.4); }
 
         .gauge-ticks {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 6px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+            display: flex; justify-content: space-between; margin-top: 6px;
+            font-size: 0.7rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
         }
 
         .gauge-tick-08, .gauge-tick-24 {
-            position: absolute;
-            bottom: -22px;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            transform: translateX(-50%);
+            position: absolute; bottom: -22px; font-size: 0.65rem;
+            color: var(--text-muted); font-family: 'JetBrains Mono', monospace; transform: translateX(-50%);
         }
-
         .gauge-tick-08 { left: 20%; }
         .gauge-tick-24 { left: 60%; }
 
-        .gauge-zone-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 0.7rem;
-            padding: 0;
-        }
-
-        .gauge-zone-labels .gz-label {
-            text-align: center;
-        }
-
+        .gauge-zone-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.7rem; padding: 0; }
+        .gauge-zone-labels .gz-label { text-align: center; }
         .gauge-zone-labels .gz-buy { color: var(--buy-color); flex: 0 0 20%; text-align: center; }
         .gauge-zone-labels .gz-normal { color: var(--text-muted); flex: 0 0 40%; text-align: center; }
         .gauge-zone-labels .gz-sell { color: var(--sell-color); flex: 0 0 40%; text-align: center; }
 
-        .zone-tag {
-            display: flex; align-items: center; gap: 5px;
-        }
+        .zone-tag { display: flex; align-items: center; gap: 5px; }
+        .zone-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        .zone-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-        }
-
-        /* Charts */
         .chart-container { position: relative; height: 300px; width: 100%; }
         .chart-container-sub { position: relative; height: 180px; width: 100%; margin-top: 5px; }
 
@@ -245,7 +178,6 @@
             display: flex; align-items: center; justify-content: center;
             gap: 8px; margin-bottom: 15px; flex-wrap: wrap;
         }
-
         .period-selector label { font-size: 0.75rem; color: var(--text-secondary); }
 
         .period-btn {
@@ -254,26 +186,19 @@
             border: 1px solid var(--border-color); border-radius: 6px;
             color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
         }
-
         .period-btn:hover { border-color: #3a3a3a; }
         .period-btn.active { border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255, 212, 59, 0.1); }
 
-        .chart-legend {
-            display: flex; gap: 15px; justify-content: center;
-            margin-bottom: 10px; flex-wrap: wrap;
-        }
-
+        .chart-legend { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--text-secondary); }
         .legend-line { width: 20px; height: 3px; border-radius: 2px; }
         .legend-line.btc { background: #ffffff; }
         .legend-line.dma { background: var(--accent-yellow); }
 
-        /* Histogram */
         .histo-container { position: relative; height: 200px; width: 100%; }
         .histo-stat { text-align: center; margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
         .histo-stat span { font-weight: 600; }
 
-        /* Backtest */
         .backtest-table-wrapper { overflow-x: auto; }
         .backtest-table {
             width: 100%; border-collapse: collapse;
@@ -294,7 +219,6 @@
         .ret-negative { color: var(--accent-red); }
         .ret-pending { color: var(--text-muted); font-style: italic; }
 
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -305,12 +229,10 @@
             background: var(--bg-tertiary); border: 1px solid var(--border-color);
             border-radius: 8px; padding: 14px; text-align: center;
         }
-
         .stat-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; }
         .stat-sub { font-size: 0.65rem; color: var(--text-secondary); margin-top: 3px; }
 
-        /* Share */
         .share-bar { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
 
         .share-btn {
@@ -319,7 +241,6 @@
             border-radius: 8px; color: var(--text-secondary); font-size: 0.72rem;
             font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s;
         }
-
         .share-btn svg { width: 14px; height: 14px; }
         .share-btn:hover { background: var(--bg-tertiary); }
         .share-btn.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
@@ -362,7 +283,6 @@
             </div>
         </header>
 
-        <!-- Summary Cards -->
         <div class="summary-cards">
             <div class="summary-card">
                 <div class="card-label">BTC 현재가</div>
@@ -386,7 +306,6 @@
             </div>
         </div>
 
-        <!-- Gauge -->
         <section class="section">
             <div class="section-header">
                 <div>
@@ -423,7 +342,6 @@
             </div>
         </section>
 
-        <!-- Dual Chart -->
         <section class="section">
             <div class="section-header">
                 <div>
@@ -451,7 +369,6 @@
             </div>
         </section>
 
-        <!-- Histogram -->
         <section class="section">
             <div class="section-header">
                 <div>
@@ -465,7 +382,6 @@
             <div class="histo-stat" id="histoStat"></div>
         </section>
 
-        <!-- Backtest -->
         <section class="section">
             <div class="section-header">
                 <div>
@@ -477,15 +393,8 @@
                 <table class="backtest-table">
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>BTC Price</th>
-                            <th>Mayer</th>
-                            <th>Min Mayer</th>
-                            <th>Duration</th>
-                            <th>1개월</th>
-                            <th>3개월</th>
-                            <th>6개월</th>
-                            <th>12개월</th>
+                            <th>Date</th><th>BTC Price</th><th>Mayer</th><th>Min Mayer</th>
+                            <th>Duration</th><th>1개월</th><th>3개월</th><th>6개월</th><th>12개월</th>
                         </tr>
                     </thead>
                     <tbody id="backtestBody"></tbody>
@@ -493,7 +402,6 @@
             </div>
         </section>
 
-        <!-- Stats -->
         <section class="section">
             <div class="section-header">
                 <div>
@@ -504,7 +412,6 @@
             <div class="stats-grid" id="statsGrid"></div>
         </section>
 
-        <!-- Share -->
         <div class="share-bar">
             <button class="share-btn twitter" onclick="shareTwitter()">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -553,11 +460,9 @@
         // CLIPBOARD HELPER (iframe/HTTP fallback)
         // ============================================================
         function copyToClipboard(text) {
-            // Try modern API first
             if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
                 return navigator.clipboard.writeText(text);
             }
-            // Fallback: textarea + execCommand
             return new Promise((resolve, reject) => {
                 const ta = document.createElement('textarea');
                 ta.value = text;
@@ -686,41 +591,23 @@
                     labels: filtered,
                     datasets: [
                         {
-                            label: 'BTC Price',
-                            data: prices,
-                            borderColor: '#fff',
-                            borderWidth: 1.5,
-                            fill: false,
-                            tension: 0.2,
-                            pointRadius: 0,
-                            pointHoverRadius: 4,
-                            yAxisID: 'y',
-                            order: 2
+                            label: 'BTC Price', data: prices, borderColor: '#fff', borderWidth: 1.5,
+                            fill: false, tension: 0.2, pointRadius: 0, pointHoverRadius: 4, yAxisID: 'y', order: 2
                         },
                         {
-                            label: '200DMA',
-                            data: dmas,
-                            borderColor: '#ffd43b',
-                            borderWidth: 1.5,
-                            fill: false,
-                            tension: 0.3,
-                            pointRadius: 0,
-                            pointHoverRadius: 4,
-                            yAxisID: 'y',
-                            order: 3
+                            label: '200DMA', data: dmas, borderColor: '#ffd43b', borderWidth: 1.5,
+                            fill: false, tension: 0.3, pointRadius: 0, pointHoverRadius: 4, yAxisID: 'y', order: 3
                         }
                     ]
                 },
                 plugins: [watermarkPlugin],
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(15,15,15,0.95)',
-                            titleColor: '#fff', bodyColor: '#ccc',
+                            backgroundColor: 'rgba(15,15,15,0.95)', titleColor: '#fff', bodyColor: '#ccc',
                             borderColor: '#333', borderWidth: 1, padding: 12,
                             titleFont: { family: 'JetBrains Mono' },
                             bodyFont: { family: 'JetBrains Mono', size: 12 },
@@ -740,8 +627,7 @@
                             type: 'logarithmic',
                             grid: { color: 'rgba(255,255,255,0.04)' },
                             ticks: {
-                                color: '#888',
-                                font: { family: 'JetBrains Mono', size: 10 },
+                                color: '#888', font: { family: 'JetBrains Mono', size: 10 },
                                 callback: (val) => {
                                     if ([200, 500, 1000, 3000, 5000, 10000, 30000, 50000, 100000].includes(val))
                                         return val >= 1000 ? '$' + (val/1000) + 'K' : '$' + val;
@@ -762,28 +648,21 @@
                     const { ctx, chartArea, scales } = chart;
                     if (!chartArea || !scales.y) return;
                     ctx.save();
-
                     const buyTop = scales.y.getPixelForValue(0.8);
                     const buyBottom = scales.y.getPixelForValue(0);
                     ctx.fillStyle = 'rgba(0,212,170,0.08)';
                     ctx.fillRect(chartArea.left, buyTop, chartArea.width, buyBottom - buyTop);
-
                     const sellTop = scales.y.getPixelForValue(Math.min(scales.y.max, 4));
                     const sellBottom = scales.y.getPixelForValue(2.4);
                     ctx.fillStyle = 'rgba(255,71,87,0.08)';
                     ctx.fillRect(chartArea.left, sellTop, chartArea.width, sellBottom - sellTop);
-
-                    ctx.setLineDash([4, 4]);
-                    ctx.lineWidth = 1;
-
+                    ctx.setLineDash([4, 4]); ctx.lineWidth = 1;
                     ctx.strokeStyle = 'rgba(0,212,170,0.4)';
                     const y08 = scales.y.getPixelForValue(0.8);
                     ctx.beginPath(); ctx.moveTo(chartArea.left, y08); ctx.lineTo(chartArea.right, y08); ctx.stroke();
-
                     ctx.strokeStyle = 'rgba(255,71,87,0.4)';
                     const y24 = scales.y.getPixelForValue(2.4);
                     ctx.beginPath(); ctx.moveTo(chartArea.left, y24); ctx.lineTo(chartArea.right, y24); ctx.stroke();
-
                     ctx.restore();
                 }
             };
@@ -793,32 +672,21 @@
                 data: {
                     labels: filtered,
                     datasets: [{
-                        label: 'Mayer Multiple',
-                        data: mayers,
-                        borderColor: '#ffd43b',
-                        borderWidth: 1.5,
-                        backgroundColor: 'rgba(255,212,59,0.05)',
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: 0,
-                        pointHoverRadius: 4,
+                        label: 'Mayer Multiple', data: mayers, borderColor: '#ffd43b', borderWidth: 1.5,
+                        backgroundColor: 'rgba(255,212,59,0.05)', fill: true, tension: 0.2, pointRadius: 0, pointHoverRadius: 4,
                     }]
                 },
                 plugins: [zonePlugin],
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
-                            backgroundColor: 'rgba(15,15,15,0.95)',
-                            titleColor: '#fff', bodyColor: '#ccc',
+                            backgroundColor: 'rgba(15,15,15,0.95)', titleColor: '#fff', bodyColor: '#ccc',
                             borderColor: '#333', borderWidth: 1, padding: 10,
                             bodyFont: { family: 'JetBrains Mono', size: 11 },
-                            callbacks: {
-                                label: (ctx) => ctx.raw === null ? null : ` Mayer: ${ctx.parsed.y.toFixed(2)}`
-                            }
+                            callbacks: { label: (ctx) => ctx.raw === null ? null : ` Mayer: ${ctx.parsed.y.toFixed(2)}` }
                         },
                         zoom: {
                             pan: { enabled: true, mode: 'x', onPanComplete: zoomReset },
@@ -829,24 +697,12 @@
                     scales: {
                         x: {
                             grid: { color: 'rgba(255,255,255,0.04)' },
-                            ticks: {
-                                color: '#999',
-                                font: { family: 'JetBrains Mono', size: 10 },
-                                autoSkip: false,
-                                maxRotation: 0,
-                                callback: tickCb
-                            }
+                            ticks: { color: '#999', font: { family: 'JetBrains Mono', size: 10 }, autoSkip: false, maxRotation: 0, callback: tickCb }
                         },
                         y: {
-                            min: 0,
-                            max: 4,
+                            min: 0, max: 4,
                             grid: { color: 'rgba(255,255,255,0.04)' },
-                            ticks: {
-                                color: '#888',
-                                font: { family: 'JetBrains Mono', size: 10 },
-                                stepSize: 0.8,
-                                callback: (v) => v.toFixed(1)
-                            }
+                            ticks: { color: '#888', font: { family: 'JetBrains Mono', size: 10 }, stepSize: 0.8, callback: (v) => v.toFixed(1) }
                         }
                     }
                 }
@@ -865,7 +721,6 @@
         function renderHistogram() {
             const bins = DATA.histogram;
             const currentMayer = DATA.current.mayer;
-
             const labels = bins.map(b => b.low.toFixed(1));
             const counts = bins.map(b => b.count);
             const colors = bins.map(b => {
@@ -880,19 +735,9 @@
 
             histoChart = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: counts,
-                        backgroundColor: colors,
-                        borderWidth: 0,
-                        barPercentage: 1.0,
-                        categoryPercentage: 1.0
-                    }]
-                },
+                data: { labels, datasets: [{ data: counts, backgroundColor: colors, borderWidth: 0, barPercentage: 1.0, categoryPercentage: 1.0 }] },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
                         tooltip: {
@@ -908,9 +753,7 @@
                         x: {
                             grid: { display: false },
                             ticks: {
-                                color: '#666',
-                                font: { family: 'JetBrains Mono', size: 9 },
-                                maxRotation: 0,
+                                color: '#666', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 0,
                                 callback: function(val, idx) {
                                     const v = parseFloat(this.getLabelForValue(val));
                                     if ([0, 0.5, 0.8, 1.0, 1.5, 2.0, 2.4, 3.0, 3.5, 4.0].includes(v)) return v.toFixed(1);
@@ -918,13 +761,7 @@
                                 }
                             }
                         },
-                        y: {
-                            grid: { color: 'rgba(255,255,255,0.04)' },
-                            ticks: {
-                                color: '#666',
-                                font: { family: 'JetBrains Mono', size: 9 }
-                            }
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#666', font: { family: 'JetBrains Mono', size: 9 } } }
                     }
                 }
             });
@@ -939,20 +776,16 @@
         function renderBacktest() {
             const tbody = document.getElementById('backtestBody');
             tbody.innerHTML = '';
-
             DATA.touches.forEach(t => {
                 const row = document.createElement('tr');
                 if (t.is_current) row.className = 'current-row';
-
                 function retCell(period) {
-                    const ret = t.returns[period];
-                    const sim = t.sim_values[period];
+                    const ret = t.returns[period]; const sim = t.sim_values[period];
                     if (ret === null) return '<td class="ret-pending">—</td>';
                     const cls = ret >= 0 ? 'ret-positive' : 'ret-negative';
                     const sign = ret >= 0 ? '+' : '';
                     return `<td class="${cls}">${sign}${ret.toFixed(1)}%<br><span style="font-size:0.6rem;opacity:0.7">$${sim.toLocaleString()}</span></td>`;
                 }
-
                 row.innerHTML = `
                     <td style="font-weight:600">${t.date_label}</td>
                     <td>$${t.price.toLocaleString('en-US', {maximumFractionDigits:0})}</td>
@@ -972,7 +805,6 @@
             const s = DATA.stats;
             const grid = document.getElementById('statsGrid');
             grid.innerHTML = '';
-
             const items = [
                 { label: '총 터치 횟수', value: s.total_touches + '회', sub: 'Mayer ≤ 0.8' },
                 { label: '12개월 적중률', value: (s.hit_rate_12mo || 0) + '%', sub: '양수 수익 비율', color: s.hit_rate_12mo >= 50 ? 'var(--accent-green)' : 'var(--accent-red)' },
@@ -981,7 +813,6 @@
                 { label: '3개월 적중률', value: (s.hit_rate_3mo || 0) + '%', sub: '양수 수익 비율', color: s.hit_rate_3mo >= 50 ? 'var(--accent-green)' : 'var(--accent-red)' },
                 { label: '평균 1개월', value: (s.avg_return_1mo >= 0 ? '+' : '') + (s.avg_return_1mo || 0).toFixed(1) + '%', sub: '터치 후 1개월', color: s.avg_return_1mo >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' },
             ];
-
             items.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'stat-card';
@@ -1002,18 +833,15 @@
             document.getElementById('card-price').textContent = '$' + c.price.toLocaleString('en-US', { maximumFractionDigits: 0 });
             document.getElementById('card-date').textContent = c.date;
             document.getElementById('card-dma').textContent = '$' + c.dma200.toLocaleString('en-US', { maximumFractionDigits: 0 });
-
             const mEl = document.getElementById('card-mayer');
             mEl.textContent = c.mayer.toFixed(2);
             if (c.mayer <= 0.8) { mEl.className = 'card-value buy'; }
             else if (c.mayer >= 2.4) { mEl.className = 'card-value sell'; }
             else { mEl.className = 'card-value neutral'; }
-
             const zoneEl = document.getElementById('card-zone');
             if (c.mayer <= 0.8) zoneEl.textContent = 'BUY ZONE';
             else if (c.mayer >= 2.4) zoneEl.textContent = 'SELL ZONE';
             else zoneEl.textContent = 'NORMAL';
-
             document.getElementById('card-pct').textContent = c.percentile + '%';
         }
 
