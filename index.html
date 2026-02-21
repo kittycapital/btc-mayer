@@ -462,7 +462,6 @@
         function copyToClipboard(text) {
             if (window.parent !== window) {
                 window.parent.postMessage({ type: 'copy', text: text }, '*');
-                return Promise.resolve();
             }
             if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
                 return navigator.clipboard.writeText(text).catch(function() { return fallbackCopy(text); });
@@ -911,5 +910,11 @@
 
         document.addEventListener('DOMContentLoaded', loadData);
     </script>
+<script>
+function sendHeight(){var h=document.documentElement.scrollHeight;window.parent.postMessage({id:'hvBtcMayer',height:h},'*')}
+window.addEventListener('load',function(){sendHeight();setTimeout(sendHeight,500);setTimeout(sendHeight,1500)});
+window.addEventListener('resize',sendHeight);
+new MutationObserver(sendHeight).observe(document.body,{childList:true,subtree:true,attributes:true});
+</script>
 </body>
 </html>
