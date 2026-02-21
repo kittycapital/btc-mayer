@@ -460,16 +460,20 @@
         // CLIPBOARD HELPER (iframe/HTTP fallback)
         // ============================================================
         function copyToClipboard(text) {
-            if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
-                return navigator.clipboard.writeText(text);
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'copy', text: text }, '*');
+                return Promise.resolve();
             }
+            if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+                return navigator.clipboard.writeText(text).catch(function() { return fallbackCopy(text); });
+            }
+            return fallbackCopy(text);
+        }
+        function fallbackCopy(text) {
             return new Promise((resolve, reject) => {
                 const ta = document.createElement('textarea');
                 ta.value = text;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                ta.style.top = '-9999px';
-                ta.style.opacity = '0';
+                ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
                 document.body.appendChild(ta);
                 ta.focus();
                 ta.select();
@@ -895,12 +899,14 @@
             setTimeout(() => { btn.innerHTML = orig; btn.style.borderColor = origBorder; btn.style.color = origColor; }, 2000);
         }
         function shareInstagram() {
-            copyToClipboard(SHARE_URL);
-            showCopied(document.querySelector('.instagram'));
+            copyToClipboard(SHARE_URL).then(function() {
+                showCopied(document.querySelector('.instagram'));
+            }).catch(function() {});
         }
         function copyLink() {
-            copyToClipboard(SHARE_URL);
-            showCopied(document.querySelector('.copy-link'));
+            copyToClipboard(SHARE_URL).then(function() {
+                showCopied(document.querySelector('.copy-link'));
+            }).catch(function() {});
         }
 
         document.addEventListener('DOMContentLoaded', loadData);
