@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayer Multiple 위젯</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            background: #0a0a0f;
+            color: #e4e4e7;
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .widget {
+            text-align: center;
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .title-link {
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .arrow {
+            display: inline-block;
+            font-size: 1rem;
+            color: #52525b;
+            margin-left: 2px;
+            transition: transform 0.2s;
+        }
+
+        a.page-link:hover .arrow { transform: translateX(3px); }
+
+        /* 큰 숫자 */
+        .big-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #888;
+            transition: color 0.5s;
+        }
+
+        .zone-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 6px;
+            letter-spacing: 2px;
+            color: #555;
+            transition: color 0.5s;
+        }
+
+        /* 바 게이지 */
+        .bar-wrap {
+            position: relative;
+            margin: 20px auto 0;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .bar {
+            display: flex;
+            height: 14px;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+
+        .bar .z-buy    { flex: 0 0 20%; background: linear-gradient(90deg, rgba(0,212,170,0.5), rgba(0,212,170,0.7)); }
+        .bar .z-normal  { flex: 0 0 40%; background: linear-gradient(90deg, rgba(85,85,85,0.4), rgba(85,85,85,0.5)); }
+        .bar .z-sell    { flex: 0 0 40%; background: linear-gradient(90deg, rgba(255,71,87,0.5), rgba(255,71,87,0.7)); }
+
+        .marker {
+            position: absolute;
+            top: -6px;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: left 0.8s ease;
+        }
+
+        .marker-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+            background: #555;
+        }
+
+        .marker-line {
+            width: 2px;
+            height: 14px;
+            background: rgba(255,255,255,0.4);
+        }
+
+        .tick-08, .tick-24 {
+            position: absolute;
+            bottom: -20px;
+            font-size: 0.6rem;
+            color: #555;
+            font-family: 'JetBrains Mono', monospace;
+            transform: translateX(-50%);
+        }
+        .tick-08 { left: 20%; }
+        .tick-24 { left: 60%; }
+
+        .bar-ticks {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.65rem;
+            color: #555;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bar-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.65rem;
+            padding: 0;
+        }
+        .lbl-buy    { color: #00d4aa; flex: 0 0 20%; text-align: center; }
+        .lbl-normal { color: #555;    flex: 0 0 40%; text-align: center; }
+        .lbl-sell   { color: #ff4757; flex: 0 0 40%; text-align: center; }
+
+        /* 하단 정보 */
+        .info-row {
+            margin-top: 16px;
+            font-size: 0.7rem;
+            color: #71717a;
+        }
+
+        .info-row span {
+            font-family: 'JetBrains Mono', monospace;
+            color: #a1a1aa;
+        }
+
+        .updated {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #52525b;
+        }
+
+        @media (max-width: 360px) {
+            .big-val { font-size: 2.2rem; }
+            .title { font-size: 1rem; }
+            .bar-wrap { max-width: 260px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://herdvibe.com/87" target="_top" class="page-link" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">
+    <div class="widget">
+        <div class="title-link">
+            <span class="title">메이어 멀티플 <span class="arrow">›</span></span>
+        </div>
+
+        <div class="big-val" id="mayer-val">--</div>
+        <div class="zone-tag" id="mayer-zone">로딩중...</div>
+
+        <div class="bar-wrap">
+            <div class="bar">
+                <div class="z-buy"></div>
+                <div class="z-normal"></div>
+                <div class="z-sell"></div>
+            </div>
+            <div class="marker" id="marker" style="left:0%">
+                <div class="marker-dot" id="marker-dot"></div>
+                <div class="marker-line"></div>
+            </div>
+            <span class="tick-08">0.8</span>
+            <span class="tick-24">2.4</span>
+        </div>
+        <div class="bar-ticks" style="max-width:300px;margin:6px auto 0;">
+            <span>0</span><span>4.0</span>
+        </div>
+        <div class="bar-labels" style="max-width:300px;margin:4px auto 0;">
+            <div class="lbl-buy">매수 구간</div>
+            <div class="lbl-normal">중립</div>
+            <div class="lbl-sell">매도 구간</div>
+        </div>
+
+        <div class="info-row" id="info-row"></div>
+        <div class="updated" id="last-updated"></div>
+    </div>
+    </a>
+
+    <script>
+        async function loadData() {
+            try {
+                var r = await fetch('data/btc_mayer.json');
+                if (!r.ok) throw new Error('not found');
+                return await r.json();
+            } catch (e) { console.error(e); return null; }
+        }
+
+        function fmtDate(str) {
+            if (!str) return '';
+            return str;
+        }
+
+        async function init() {
+            var d = await loadData();
+            if (!d || !d.current) {
+                document.getElementById('mayer-val').textContent = '--';
+                document.getElementById('mayer-zone').textContent = '데이터 없음';
+                return;
+            }
+
+            var c = d.current;
+            var mayer = c.mayer;
+            var color = '#555';
+            var zone = 'NORMAL';
+
+            if (mayer <= 0.8) { color = '#00d4aa'; zone = 'BUY ZONE'; }
+            else if (mayer >= 2.4) { color = '#ff4757'; zone = 'SELL ZONE'; }
+
+            var valEl = document.getElementById('mayer-val');
+            valEl.textContent = mayer.toFixed(2);
+            valEl.style.color = color;
+
+            var zoneEl = document.getElementById('mayer-zone');
+            zoneEl.textContent = zone;
+            zoneEl.style.color = color;
+
+            // 마커 위치
+            var clamped = Math.max(0, Math.min(4, mayer));
+            var pct = (clamped / 4) * 100;
+            setTimeout(function() {
+                document.getElementById('marker').style.left = pct + '%';
+                document.getElementById('marker-dot').style.background = color;
+            }, 100);
+
+            // 하단 정보
+            document.getElementById('info-row').innerHTML =
+                'BTC: <span>$' + c.price.toLocaleString('en-US', {maximumFractionDigits:0}) +
+                '</span> · 200DMA: <span>$' + c.dma200.toLocaleString('en-US', {maximumFractionDigits:0}) +
+                '</span> · 하위 <span>' + c.percentile + '%</span>';
+
+            if (c.date)
+                document.getElementById('last-updated').textContent =
+                    '마지막 업데이트: ' + c.date;
+        }
+
+        init();
+    </script>
+    <script>
+    function sendHeight(){
+        window.parent.postMessage({
+            id:'hvMayerWidget',
+            height:document.documentElement.scrollHeight,
+            desktopHeight:400,
+            mobileHeight:360
+        },'*');
+    }
+    window.addEventListener('load',function(){sendHeight();setTimeout(sendHeight,500);setTimeout(sendHeight,1500)});
+    window.addEventListener('resize',sendHeight);
+    </script>
+</body>
+</html>
