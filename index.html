@@ -585,6 +585,18 @@
 
             const zoomReset = () => { document.getElementById('resetZoomBtn').style.display = 'inline-block'; };
 
+            let syncing = false;
+            function syncCharts(source) {
+                if (syncing) return;
+                syncing = true;
+                const target = source === priceChart ? mayerChart : priceChart;
+                if (!source || !target) { syncing = false; return; }
+                const srcScale = source.scales.x;
+                target.zoomScale('x', { min: srcScale.min, max: srcScale.max }, 'none');
+                target.update('none');
+                syncing = false;
+            }
+
             const ctx1 = document.getElementById('priceChart').getContext('2d');
             if (priceChart) priceChart.destroy();
 
@@ -619,8 +631,8 @@
                             }
                         },
                         zoom: {
-                            pan: { enabled: true, mode: 'x', onPanComplete: zoomReset },
-                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: zoomReset },
+                            pan: { enabled: true, mode: 'x', onPanComplete: ({chart}) => { zoomReset(); syncCharts(chart); } },
+                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: ({chart}) => { zoomReset(); syncCharts(chart); } },
                             limits: { x: { minRange: 10 } }
                         }
                     },
@@ -692,8 +704,8 @@
                             callbacks: { label: (ctx) => ctx.raw === null ? null : ` Mayer: ${ctx.parsed.y.toFixed(2)}` }
                         },
                         zoom: {
-                            pan: { enabled: true, mode: 'x', onPanComplete: zoomReset },
-                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: zoomReset },
+                            pan: { enabled: true, mode: 'x', onPanComplete: ({chart}) => { zoomReset(); syncCharts(chart); } },
+                            zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x', onZoomComplete: ({chart}) => { zoomReset(); syncCharts(chart); } },
                             limits: { x: { minRange: 10 } }
                         }
                     },
