@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-03-15 09:23 UTC",
+    "generated": "2026-03-16 09:52 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 3999
+    "total_days": 4000
   },
   "current": {
-    "price": 71874.31,
-    "dma200": 93934.79,
-    "mayer": 0.7652,
-    "percentile": 11.8,
-    "date": "2026-03-15"
+    "price": 73290.12,
+    "dma200": 93743.09,
+    "mayer": 0.7818,
+    "percentile": 13.3,
+    "date": "2026-03-16"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3017,10 +3017,10 @@
       "dma200": 94745.07,
       "mayer": 0.741
     },
-    "2026-03-15": {
-      "close": 71874.31,
-      "dma200": 93934.79,
-      "mayer": 0.7652
+    "2026-03-16": {
+      "close": 73290.12,
+      "dma200": 93743.09,
+      "mayer": 0.7818
     }
   },
   "histogram": [
@@ -3077,8 +3077,8 @@
       "range": "0.7-0.8",
       "low": 0.7,
       "high": 0.8,
-      "count": 319,
-      "pct": 7.98
+      "count": 320,
+      "pct": 8.0
     },
     {
       "range": "0.8-0.9",
@@ -3141,7 +3141,7 @@
       "low": 1.6,
       "high": 1.7,
       "count": 103,
-      "pct": 2.58
+      "pct": 2.57
     },
     {
       "range": "1.7-1.8",
@@ -3162,7 +3162,7 @@
       "low": 1.9,
       "high": 2.0,
       "count": 59,
-      "pct": 1.48
+      "pct": 1.47
     },
     {
       "range": "2.0-2.1",
@@ -3176,7 +3176,7 @@
       "low": 2.1,
       "high": 2.2,
       "count": 59,
-      "pct": 1.48
+      "pct": 1.47
     },
     {
       "range": "2.2-2.3",
@@ -3190,7 +3190,7 @@
       "low": 2.3,
       "high": 2.4,
       "count": 23,
-      "pct": 0.58
+      "pct": 0.57
     },
     {
       "range": "2.4-2.5",
@@ -3211,14 +3211,14 @@
       "low": 2.6,
       "high": 2.7,
       "count": 9,
-      "pct": 0.23
+      "pct": 0.22
     },
     {
       "range": "2.7-2.8",
       "low": 2.7,
       "high": 2.8,
       "count": 5,
-      "pct": 0.13
+      "pct": 0.12
     },
     {
       "range": "2.8-2.9",
@@ -3253,7 +3253,7 @@
       "low": 3.2,
       "high": 3.3,
       "count": 5,
-      "pct": 0.13
+      "pct": 0.12
     },
     {
       "range": "3.3-3.4",
@@ -3493,7 +3493,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 115,
+      "duration_days": 116,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
