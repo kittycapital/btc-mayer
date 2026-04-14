@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-04-13 10:24 UTC",
+    "generated": "2026-04-14 10:05 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4028
+    "total_days": 4029
   },
   "current": {
-    "price": 70757.81,
-    "dma200": 87680.78,
-    "mayer": 0.807,
-    "percentile": 16.1,
-    "date": "2026-04-13"
+    "price": 74498.27,
+    "dma200": 87523.34,
+    "mayer": 0.8512,
+    "percentile": 21.8,
+    "date": "2026-04-14"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3037,10 +3037,10 @@
       "dma200": 88696.45,
       "mayer": 0.8019
     },
-    "2026-04-13": {
-      "close": 70757.81,
-      "dma200": 87680.78,
-      "mayer": 0.807
+    "2026-04-14": {
+      "close": 74498.27,
+      "dma200": 87523.34,
+      "mayer": 0.8512
     }
   },
   "histogram": [
@@ -3098,14 +3098,14 @@
       "low": 0.7,
       "high": 0.8,
       "count": 341,
-      "pct": 8.47
+      "pct": 8.46
     },
     {
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
-      "count": 451,
-      "pct": 11.2
+      "count": 452,
+      "pct": 11.22
     },
     {
       "range": "0.9-1.0",
@@ -3119,7 +3119,7 @@
       "low": 1.0,
       "high": 1.1,
       "count": 372,
-      "pct": 9.24
+      "pct": 9.23
     },
     {
       "range": "1.1-1.2",
@@ -3140,14 +3140,14 @@
       "low": 1.3,
       "high": 1.4,
       "count": 312,
-      "pct": 7.75
+      "pct": 7.74
     },
     {
       "range": "1.4-1.5",
       "low": 1.4,
       "high": 1.5,
       "count": 198,
-      "pct": 4.92
+      "pct": 4.91
     },
     {
       "range": "1.5-1.6",
@@ -3175,7 +3175,7 @@
       "low": 1.8,
       "high": 1.9,
       "count": 57,
-      "pct": 1.42
+      "pct": 1.41
     },
     {
       "range": "1.9-2.0",
@@ -3513,7 +3513,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 144,
+      "duration_days": 145,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
