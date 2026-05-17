@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-05-16 09:29 UTC",
+    "generated": "2026-05-17 09:30 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4061
+    "total_days": 4062
   },
   "current": {
-    "price": 77991.55,
-    "dma200": 81751.97,
-    "mayer": 0.954,
-    "percentile": 32.4,
-    "date": "2026-05-16"
+    "price": 78112.28,
+    "dma200": 81592.95,
+    "mayer": 0.9573,
+    "percentile": 33.2,
+    "date": "2026-05-17"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3062,10 +3062,10 @@
       "dma200": 82269.16,
       "mayer": 0.9636
     },
-    "2026-05-16": {
-      "close": 77991.55,
-      "dma200": 81751.97,
-      "mayer": 0.954
+    "2026-05-17": {
+      "close": 78112.28,
+      "dma200": 81592.95,
+      "mayer": 0.9573
     }
   },
   "histogram": [
@@ -3123,21 +3123,21 @@
       "low": 0.7,
       "high": 0.8,
       "count": 341,
-      "pct": 8.4
+      "pct": 8.39
     },
     {
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
       "count": 460,
-      "pct": 11.33
+      "pct": 11.32
     },
     {
       "range": "0.9-1.0",
       "low": 0.9,
       "high": 1.0,
-      "count": 465,
-      "pct": 11.45
+      "count": 466,
+      "pct": 11.47
     },
     {
       "range": "1.0-1.1",
@@ -3151,7 +3151,7 @@
       "low": 1.1,
       "high": 1.2,
       "count": 616,
-      "pct": 15.17
+      "pct": 15.16
     },
     {
       "range": "1.2-1.3",
@@ -3172,7 +3172,7 @@
       "low": 1.4,
       "high": 1.5,
       "count": 198,
-      "pct": 4.88
+      "pct": 4.87
     },
     {
       "range": "1.5-1.6",
@@ -3538,17 +3538,17 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 177,
+      "duration_days": 178,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
-        "6mo": -10.0,
+        "6mo": -9.8,
         "12mo": null
       },
       "sim_values": {
         "1mo": 10198,
         "3mo": 7668,
-        "6mo": 9003,
+        "6mo": 9017,
         "12mo": null
       },
       "is_current": true
