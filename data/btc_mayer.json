@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-06-10 10:23 UTC",
+    "generated": "2026-06-11 10:29 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4086
+    "total_days": 4087
   },
   "current": {
-    "price": 61198.33,
-    "dma200": 78123.09,
-    "mayer": 0.7834,
-    "percentile": 13.7,
-    "date": "2026-06-10"
+    "price": 62778.91,
+    "dma200": 78004.22,
+    "mayer": 0.8048,
+    "percentile": 15.9,
+    "date": "2026-06-11"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3078,9 +3078,14 @@
       "mayer": 0.8094
     },
     "2026-06-10": {
-      "close": 61198.33,
-      "dma200": 78123.09,
-      "mayer": 0.7834
+      "close": 61449.29,
+      "dma200": 78124.35,
+      "mayer": 0.7866
+    },
+    "2026-06-11": {
+      "close": 62778.91,
+      "dma200": 78004.22,
+      "mayer": 0.8048
     }
   },
   "histogram": [
@@ -3144,15 +3149,15 @@
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
-      "count": 466,
-      "pct": 11.4
+      "count": 467,
+      "pct": 11.43
     },
     {
       "range": "0.9-1.0",
       "low": 0.9,
       "high": 1.0,
       "count": 480,
-      "pct": 11.75
+      "pct": 11.74
     },
     {
       "range": "1.0-1.1",
@@ -3166,7 +3171,7 @@
       "low": 1.1,
       "high": 1.2,
       "count": 616,
-      "pct": 15.08
+      "pct": 15.07
     },
     {
       "range": "1.2-1.3",
@@ -3180,14 +3185,14 @@
       "low": 1.3,
       "high": 1.4,
       "count": 312,
-      "pct": 7.64
+      "pct": 7.63
     },
     {
       "range": "1.4-1.5",
       "low": 1.4,
       "high": 1.5,
       "count": 198,
-      "pct": 4.85
+      "pct": 4.84
     },
     {
       "range": "1.5-1.6",
@@ -3215,7 +3220,7 @@
       "low": 1.8,
       "high": 1.9,
       "count": 57,
-      "pct": 1.4
+      "pct": 1.39
     },
     {
       "range": "1.9-2.0",
@@ -3553,7 +3558,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 202,
+      "duration_days": 203,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
