@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-06-11 10:29 UTC",
+    "generated": "2026-06-12 10:28 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4087
+    "total_days": 4088
   },
   "current": {
-    "price": 62778.91,
-    "dma200": 78004.22,
-    "mayer": 0.8048,
-    "percentile": 15.9,
-    "date": "2026-06-11"
+    "price": 63535.13,
+    "dma200": 77884.45,
+    "mayer": 0.8158,
+    "percentile": 17.0,
+    "date": "2026-06-12"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3082,10 +3082,10 @@
       "dma200": 78124.35,
       "mayer": 0.7866
     },
-    "2026-06-11": {
-      "close": 62778.91,
-      "dma200": 78004.22,
-      "mayer": 0.8048
+    "2026-06-12": {
+      "close": 63535.13,
+      "dma200": 77884.45,
+      "mayer": 0.8158
     }
   },
   "histogram": [
@@ -3149,8 +3149,8 @@
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
-      "count": 467,
-      "pct": 11.43
+      "count": 468,
+      "pct": 11.45
     },
     {
       "range": "0.9-1.0",
@@ -3558,7 +3558,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 203,
+      "duration_days": 204,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
