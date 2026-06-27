@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-06-26 10:03 UTC",
+    "generated": "2026-06-27 09:39 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4102
+    "total_days": 4103
   },
   "current": {
-    "price": 59590.43,
-    "dma200": 75999.11,
-    "mayer": 0.7841,
-    "percentile": 13.6,
-    "date": "2026-06-26"
+    "price": 60312.27,
+    "dma200": 75839.34,
+    "mayer": 0.7953,
+    "percentile": 14.7,
+    "date": "2026-06-27"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3092,10 +3092,10 @@
       "dma200": 76307.78,
       "mayer": 0.7993
     },
-    "2026-06-26": {
-      "close": 59590.43,
-      "dma200": 75999.11,
-      "mayer": 0.7841
+    "2026-06-27": {
+      "close": 60312.27,
+      "dma200": 75839.34,
+      "mayer": 0.7953
     }
   },
   "histogram": [
@@ -3152,15 +3152,15 @@
       "range": "0.7-0.8",
       "low": 0.7,
       "high": 0.8,
-      "count": 348,
-      "pct": 8.48
+      "count": 349,
+      "pct": 8.51
     },
     {
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
       "count": 479,
-      "pct": 11.68
+      "pct": 11.67
     },
     {
       "range": "0.9-1.0",
@@ -3181,21 +3181,21 @@
       "low": 1.1,
       "high": 1.2,
       "count": 616,
-      "pct": 15.02
+      "pct": 15.01
     },
     {
       "range": "1.2-1.3",
       "low": 1.2,
       "high": 1.3,
       "count": 392,
-      "pct": 9.56
+      "pct": 9.55
     },
     {
       "range": "1.3-1.4",
       "low": 1.3,
       "high": 1.4,
       "count": 312,
-      "pct": 7.61
+      "pct": 7.6
     },
     {
       "range": "1.4-1.5",
@@ -3279,7 +3279,7 @@
       "low": 2.5,
       "high": 2.6,
       "count": 8,
-      "pct": 0.2
+      "pct": 0.19
     },
     {
       "range": "2.6-2.7",
@@ -3568,7 +3568,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 218,
+      "duration_days": 219,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
