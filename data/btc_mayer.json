@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-07-29 11:12 UTC",
+    "generated": "2026-07-30 10:56 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4135
+    "total_days": 4136
   },
   "current": {
-    "price": 64427.8,
-    "dma200": 71730.21,
-    "mayer": 0.8982,
-    "percentile": 27.1,
-    "date": "2026-07-29"
+    "price": 64488.97,
+    "dma200": 71595.92,
+    "mayer": 0.9007,
+    "percentile": 27.6,
+    "date": "2026-07-30"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3113,9 +3113,14 @@
       "mayer": 0.9094
     },
     "2026-07-29": {
-      "close": 64427.8,
-      "dma200": 71730.21,
-      "mayer": 0.8982
+      "close": 63908.17,
+      "dma200": 71727.62,
+      "mayer": 0.891
+    },
+    "2026-07-30": {
+      "close": 64488.97,
+      "dma200": 71595.92,
+      "mayer": 0.9007
     }
   },
   "histogram": [
@@ -3173,7 +3178,7 @@
       "low": 0.7,
       "high": 0.8,
       "count": 353,
-      "pct": 8.54
+      "pct": 8.53
     },
     {
       "range": "0.8-0.9",
@@ -3186,22 +3191,22 @@
       "range": "0.9-1.0",
       "low": 0.9,
       "high": 1.0,
-      "count": 483,
-      "pct": 11.68
+      "count": 484,
+      "pct": 11.7
     },
     {
       "range": "1.0-1.1",
       "low": 1.0,
       "high": 1.1,
       "count": 372,
-      "pct": 9.0
+      "pct": 8.99
     },
     {
       "range": "1.1-1.2",
       "low": 1.1,
       "high": 1.2,
       "count": 616,
-      "pct": 14.9
+      "pct": 14.89
     },
     {
       "range": "1.2-1.3",
@@ -3215,7 +3220,7 @@
       "low": 1.3,
       "high": 1.4,
       "count": 312,
-      "pct": 7.55
+      "pct": 7.54
     },
     {
       "range": "1.4-1.5",
@@ -3588,7 +3593,7 @@
       "dma200": 110370.69,
       "mayer": 0.78,
       "min_mayer": 0.61,
-      "duration_days": 251,
+      "duration_days": 252,
       "returns": {
         "1mo": 2.0,
         "3mo": -23.3,
