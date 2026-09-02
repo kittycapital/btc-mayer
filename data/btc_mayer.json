@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-09-01 13:44 UTC",
+    "generated": "2026-09-02 13:01 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4169
+    "total_days": 4170
   },
   "current": {
-    "price": 77818.28,
-    "dma200": 69470.19,
-    "mayer": 1.1202,
-    "percentile": 51.5,
-    "date": "2026-09-01"
+    "price": 76628.55,
+    "dma200": 69502.42,
+    "mayer": 1.1025,
+    "percentile": 48.7,
+    "date": "2026-09-02"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3137,10 +3137,10 @@
       "dma200": 69174.61,
       "mayer": 1.1424
     },
-    "2026-09-01": {
-      "close": 77818.28,
-      "dma200": 69470.19,
-      "mayer": 1.1202
+    "2026-09-02": {
+      "close": 76628.55,
+      "dma200": 69502.42,
+      "mayer": 1.1025
     }
   },
   "histogram": [
@@ -3191,7 +3191,7 @@
       "low": 0.6,
       "high": 0.7,
       "count": 222,
-      "pct": 5.33
+      "pct": 5.32
     },
     {
       "range": "0.7-0.8",
@@ -3205,7 +3205,7 @@
       "low": 0.8,
       "high": 0.9,
       "count": 508,
-      "pct": 12.19
+      "pct": 12.18
     },
     {
       "range": "0.9-1.0",
@@ -3225,8 +3225,8 @@
       "range": "1.1-1.2",
       "low": 1.1,
       "high": 1.2,
-      "count": 628,
-      "pct": 15.06
+      "count": 629,
+      "pct": 15.08
     },
     {
       "range": "1.2-1.3",
@@ -3268,7 +3268,7 @@
       "low": 1.7,
       "high": 1.8,
       "count": 69,
-      "pct": 1.66
+      "pct": 1.65
     },
     {
       "range": "1.8-1.9",
@@ -3282,21 +3282,21 @@
       "low": 1.9,
       "high": 2.0,
       "count": 59,
-      "pct": 1.42
+      "pct": 1.41
     },
     {
       "range": "2.0-2.1",
       "low": 2.0,
       "high": 2.1,
       "count": 54,
-      "pct": 1.3
+      "pct": 1.29
     },
     {
       "range": "2.1-2.2",
       "low": 2.1,
       "high": 2.2,
       "count": 59,
-      "pct": 1.42
+      "pct": 1.41
     },
     {
       "range": "2.2-2.3",
@@ -3626,18 +3626,18 @@
         "6mo": 8859,
         "12mo": null
       },
-      "is_current": true
+      "is_current": false
     }
   ],
   "stats": {
     "total_touches": 6,
-    "completed": 5,
-    "avg_return_1mo": 7.3,
-    "hit_rate_1mo": 60,
-    "avg_return_3mo": 18.9,
-    "hit_rate_3mo": 80,
-    "avg_return_6mo": 6.0,
-    "hit_rate_6mo": 40,
+    "completed": 6,
+    "avg_return_1mo": 6.4,
+    "hit_rate_1mo": 67,
+    "avg_return_3mo": 11.9,
+    "hit_rate_3mo": 67,
+    "avg_return_6mo": 3.1,
+    "hit_rate_6mo": 33,
     "avg_return_12mo": 27.6,
     "hit_rate_12mo": 40
   }
