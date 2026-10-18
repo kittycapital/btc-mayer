@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-10-17 12:31 UTC",
+    "generated": "2026-10-18 12:50 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4215
+    "total_days": 4216
   },
   "current": {
-    "price": 81432.12,
-    "dma200": 72425.94,
-    "mayer": 1.1244,
-    "percentile": 52.1,
-    "date": "2026-10-17"
+    "price": 81871.19,
+    "dma200": 72494.65,
+    "mayer": 1.1293,
+    "percentile": 53.0,
+    "date": "2026-10-18"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3172,10 +3172,10 @@
       "dma200": 72204.97,
       "mayer": 1.1296
     },
-    "2026-10-17": {
-      "close": 81432.12,
-      "dma200": 72425.94,
-      "mayer": 1.1244
+    "2026-10-18": {
+      "close": 81871.19,
+      "dma200": 72494.65,
+      "mayer": 1.1293
     }
   },
   "histogram": [
@@ -3260,8 +3260,8 @@
       "range": "1.1-1.2",
       "low": 1.1,
       "high": 1.2,
-      "count": 666,
-      "pct": 15.8
+      "count": 667,
+      "pct": 15.82
     },
     {
       "range": "1.2-1.3",
