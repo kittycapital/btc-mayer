@@ -1,20 +1,20 @@
 {
   "metadata": {
-    "generated": "2026-11-20 17:23 UTC",
+    "generated": "2026-11-21 16:28 UTC",
     "source": "BTC_USD.csv",
     "dma_period": 200,
     "buy_threshold": 0.8,
     "sell_threshold": 2.4,
     "touch_threshold": 0.8,
     "simulation_amount": 10000,
-    "total_days": 4249
+    "total_days": 4250
   },
   "current": {
-    "price": 59380.0,
-    "dma200": 72534.48,
-    "mayer": 0.8186,
-    "percentile": 16.9,
-    "date": "2026-11-20"
+    "price": 59854.17,
+    "dma200": 72426.21,
+    "mayer": 0.8264,
+    "percentile": 17.7,
+    "date": "2026-11-21"
   },
   "chart_data": {
     "2014-09-17": {
@@ -3197,10 +3197,10 @@
       "dma200": 72719.9,
       "mayer": 0.8662
     },
-    "2026-11-20": {
-      "close": 59380.0,
-      "dma200": 72534.48,
-      "mayer": 0.8186
+    "2026-11-21": {
+      "close": 59854.17,
+      "dma200": 72426.21,
+      "mayer": 0.8264
     }
   },
   "histogram": [
@@ -3244,7 +3244,7 @@
       "low": 0.5,
       "high": 0.6,
       "count": 58,
-      "pct": 1.37
+      "pct": 1.36
     },
     {
       "range": "0.6-0.7",
@@ -3264,8 +3264,8 @@
       "range": "0.8-0.9",
       "low": 0.8,
       "high": 0.9,
-      "count": 515,
-      "pct": 12.12
+      "count": 516,
+      "pct": 12.14
     },
     {
       "range": "0.9-1.0",
@@ -3279,21 +3279,21 @@
       "low": 1.0,
       "high": 1.1,
       "count": 395,
-      "pct": 9.3
+      "pct": 9.29
     },
     {
       "range": "1.1-1.2",
       "low": 1.1,
       "high": 1.2,
       "count": 675,
-      "pct": 15.89
+      "pct": 15.88
     },
     {
       "range": "1.2-1.3",
       "low": 1.2,
       "high": 1.3,
       "count": 395,
-      "pct": 9.3
+      "pct": 9.29
     },
     {
       "range": "1.3-1.4",
@@ -3678,13 +3678,13 @@
         "1mo": 2.0,
         "3mo": -23.3,
         "6mo": -11.4,
-        "12mo": -31.5
+        "12mo": -32.1
       },
       "sim_values": {
         "1mo": 10198,
         "3mo": 7668,
         "6mo": 8859,
-        "12mo": 6854
+        "12mo": 6787
       },
       "is_current": false
     }
@@ -3698,7 +3698,7 @@
     "hit_rate_3mo": 67,
     "avg_return_6mo": 3.1,
     "hit_rate_6mo": 33,
-    "avg_return_12mo": 17.8,
+    "avg_return_12mo": 17.7,
     "hit_rate_12mo": 33
   }
 }
